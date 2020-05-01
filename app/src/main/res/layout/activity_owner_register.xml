@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OwnerRegisterActivity">
+
+    <ViewFlipper
+        android:id="@+id/viewFlipperOwnerRegister"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ownerAccountDetailsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:background="@color/colorPrimary"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/enterDetailsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/hind_bold"
+                android:text="@string/signup_msg"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.458"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fullNameInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:hint="@string/full_name"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enterDetailsText"
+                app:startIconDrawable="@drawable/person_24"
+                app:startIconTint="@color/colorSecondary"
+                app:startIconTintMode="src_in">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:autofillHints=""
+                    android:background="@android:color/white"
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/usernameInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:hint="@string/username"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.512"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fullNameInputLayout"
+                app:startIconDrawable="@drawable/person_24"
+                app:startIconTint="@color/colorSecondary"
+                app:startIconTintMode="src_in">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/userName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:autofillHints=""
+                    android:background="@android:color/white"
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:hint="@string/email"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/usernameInputLayout"
+                app:startIconDrawable="@drawable/mail_24"
+                app:startIconTint="@color/colorSecondary"
+                app:startIconTintMode="src_in">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:autofillHints=""
+                    android:background="@android:color/white"
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="textEmailAddress"
+                    android:minHeight="48dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    tools:layout_editor_absoluteX="75dp"
+                    tools:layout_editor_absoluteY="426dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:hint="@string/password"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailInputLayout"
+                app:passwordToggleEnabled="true"
+                app:startIconDrawable="@drawable/lock_24"
+                app:startIconTint="@color/colorSecondary"
+                app:startIconTintMode="src_in">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:autofillHints=""
+                    android:background="@android:color/white"
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp"
+                    tools:layout_editor_absoluteX="70dp"
+                    tools:layout_editor_absoluteY="443dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/ownerRegisterNextPageButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginBottom="24dp"
+                android:background="@android:color/white"
+                android:fontFamily="@font/hind_light"
+                android:maxWidth="150dp"
+                android:minHeight="40dp"
+                android:text="@string/continue_to_next"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/design_default_color_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.48"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout"
+                app:rippleColor="@color/colorSecondary"
+                app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ownerRestaurantsDetailsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:background="@color/colorPrimary"
+            android:fitsSystemWindows="true">
+
+            <TextView
+                android:id="@+id/busiunessAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/hind_light"
+                android:text="@string/business_address_headline"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/restaurantNameInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/business_name"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.508"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/busiunessAddress"
+                app:startIconDrawable="@drawable/store_24"
+                app:startIconTint="@color/colorSecondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/restaurantName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:background="@android:color/white"
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="textPostalAddress|textCapWords"
+                    android:minHeight="48dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/streetInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/street"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.505"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/restaurantNameInputLayout"
+                app:startIconDrawable="@drawable/location_on_24"
+                app:startIconTint="@color/colorSecondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ownerStreet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:drawablePadding="8dp"
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="textPersonName|textCapWords"
+                    android:minHeight="48dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/cityInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/city"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.506"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/streetInputLayout"
+                app:startIconDrawable="@drawable/location_on_24"
+                app:startIconTint="@color/colorSecondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ownerCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="textPostalAddress|textCapWords"
+                    android:minHeight="48dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/countryInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/country"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.506"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cityInputLayout"
+                app:startIconDrawable="@drawable/location_on_24"
+                app:startIconTint="@color/colorSecondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ownerCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="textPersonName|textCapWords"
+                    android:minHeight="48dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/continueToBankBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/hind_light"
+                android:maxWidth="150dp"
+                android:minHeight="40dp"
+                android:text="@string/continue_to_next"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/design_default_color_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/countryInputLayout"
+                app:rippleColor="@color/colorSecondary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ownerBankDetailsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:background="@color/colorPrimary"
+            android:fitsSystemWindows="true">
+
+            <TextView
+                android:id="@+id/bankAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/hind_light"
+                android:text="@string/bank_accout_headline"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bankNameInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/bank_number"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bankAccount"
+                app:startIconDrawable="@drawable/payment_24"
+                app:startIconTint="@color/colorSecondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ownerBankName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:drawableStart="@drawable/payment_24"
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="numberDecimal"
+                    android:minHeight="48dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/accountNumberInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/account_number"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bankNameInputLayout"
+                app:startIconDrawable="@drawable/payment_24"
+                app:startIconTint="@color/colorSecondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ownerAccountNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="numberDecimal"
+                    android:minHeight="48dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/branchInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/bank_branch"
+                app:boxBackgroundColor="@color/design_default_color_background"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/colorSecondary"
+                app:boxStrokeWidth="3dp"
+                app:helperText="@string/required_help_text"
+                app:helperTextTextColor="@color/colorSecondary"
+                app:hintTextColor="@color/colorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/accountNumberInputLayout"
+                app:startIconDrawable="@drawable/payment_24"
+                app:startIconTint="@color/colorSecondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ownerBankBranch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:background="@android:color/white"
+                    android:ems="10"
+                    android:fontFamily="@font/hind_light"
+                    android:inputType="numberDecimal"
+                    android:minHeight="48dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/finishBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginRight="100dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/hind_light"
+                android:maxWidth="150dp"
+                android:minHeight="40dp"
+                android:text="@string/finish"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/design_default_color_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/branchInputLayout"
+                app:rippleColor="@color/colorSecondary" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ViewFlipper>
+
+</RelativeLayout>

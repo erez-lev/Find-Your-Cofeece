@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Cofeece</string>
+    <string name="owner_register">Register as owner</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="email">"Email"</string>
+    <string name="password">"Password"</string>
+    <string name="full_name">"Full Name"</string>
+    <string name="username">"Username"</string>
+    <string name="continue_to_next">Continue</string>
+    <string name="business_name">"Business Name"</string>
+    <string name="street">"Street and House Number"</string>
+    <string name="country">"Country"</string>
+    <string name="city">"City"</string>
+    <string name="bank_number">"Bank Number"</string>
+    <string name="account_number">"Account Number"</string>
+    <string name="bank_branch">"Branch"</string>
+    <string name="finish">Finish</string>
+    <string name="done">Done</string>
+    <string name="from">from:</string>
+    <string name="to">to:</string>
+    <string name="welcome_owner">WELCOME OWNER</string>
+    <string name="signup_msg">SIGN UP TO COFEECE</string>
+    <string name="view_restaurant_list">View List</string>
+    <string name="distance_10km">10 km</string>
+    <string name="distance_5km">5 km</string>
+    <string name="business_address_headline">BUSIUNESS ADDRESS</string>
+    <string name="bank_accout_headline">BANK ACCOUNT</string>
+
+    <string name="card_name">Card Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="payment">Payment</string>
+    <string name="month">00</string>
+    <string name="year">00</string>
+    <string name="cvv">CVV</string>
+    <string name="required_help_text">Required</string>
+    <string name="welcome_client">Welcome</string>
+</resources>
