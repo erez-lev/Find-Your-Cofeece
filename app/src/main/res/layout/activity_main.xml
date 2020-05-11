@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainLayout"
+    style="@style/AppTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E6FFFFFF"
     android:clickable="true"
-    tools:context=".MainActivity"
-    android:focusable="true">
+    android:focusable="true"
+    tools:context=".MainActivity">
 
 
     <fragment
@@ -18,21 +19,43 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ownerSideButton"
+        style="@style/FloatingActionButton.App"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="40dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/store_black_18dp"
+        android:src="@drawable/store_dark_24"
         app:backgroundTint="@color/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/reserveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="@string/reserve"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconPadding="8dp"
+        app:iconTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/ownerSideButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/ownerSideButton"
+        app:layout_constraintTop_toTopOf="@+id/ownerSideButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

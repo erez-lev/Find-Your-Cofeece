@@ -119,11 +119,6 @@ class OwnerRegisterViewModel : ViewModel() {
         return owner
     }
 
-    fun insertOwnerToDatabase() {
-//        viewModelScope.launch {
-            db.writeToDatabase(user = signUpAsOwner(), type = OWNERS)
-//        }
-    }
 
     fun isEmptyField() {
 

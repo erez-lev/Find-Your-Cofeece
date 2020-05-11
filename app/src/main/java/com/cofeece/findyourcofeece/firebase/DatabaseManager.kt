@@ -12,17 +12,21 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 
+
 private const val TAG = "DatabaseManager"
 
 internal const val CLIENTS = "Clients"
 internal const val OWNERS = "Owners"
 
-interface OwnerListCallBack {
-    fun onCallBack(value: ArrayList<Owner>)
-}
 
 
-class DatabaseManager {
+
+class DatabaseManager() {
+
+    interface OnDataCallBack {
+        fun onOwnerDataCallBack(owners: ArrayList<Owner>)
+        fun onClientDataCallBack(clients: ArrayList<Client>)
+    }
 
     /** Properties: */
     var owners = ArrayList<Owner>()
@@ -55,7 +59,7 @@ class DatabaseManager {
                 else -> throw Exception("Unknown type was entered")
             }
         } else {
-            user.error()
+            throw Exception("Register user wasn't succeed!")
         }
 
     }
@@ -64,7 +68,8 @@ class DatabaseManager {
         user.name.isEmpty() || user.username.isEmpty() || user.email.isEmpty() || user.password.isEmpty()
 
 
-    fun readFromDatabase(type: String, callBack: OwnerListCallBack) {
+
+    fun readFromDatabase(type: String, callBack: OnDataCallBack) {
         when (type) {
             OWNERS -> {
                 ownerRef.addValueEventListener(object : ValueEventListener {
@@ -81,7 +86,7 @@ class DatabaseManager {
                                 "readFromDatabase: onDataChange: owner's name is ${owners[0].name}"
                             )
                         }
-                        callBack.onCallBack(owners)
+                        callBack.onOwnerDataCallBack(owners)
 
                     }
 

@@ -27,15 +27,16 @@
     <string name="view_restaurant_list">View List</string>
     <string name="distance_10km">10 km</string>
     <string name="distance_5km">5 km</string>
-    <string name="business_address_headline">BUSIUNESS ADDRESS</string>
-    <string name="bank_accout_headline">BANK ACCOUNT</string>
+    <string name="business_address_headline">BUSINESS ADDRESS</string>
+    <string name="bank_account_headline">BANK ACCOUNT</string>
 
     <string name="card_name">Card Name</string>
     <string name="card_number">Card Number</string>
     <string name="payment">Payment</string>
-    <string name="month">00</string>
-    <string name="year">00</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
     <string name="cvv">CVV</string>
     <string name="required_help_text">Required</string>
     <string name="welcome_client">Welcome</string>
+    <string name="reserve">Reserve</string>
 </resources>

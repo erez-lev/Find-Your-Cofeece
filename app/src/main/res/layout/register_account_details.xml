@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/registerAccountDetails"
+    style="@style/AppTheme"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center|center_horizontal|center_vertical"
+    android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/accountDetailsHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/hind_bold"
+        android:text="@string/signup_msg"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fullNameInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/full_name"
+        app:boxBackgroundColor="@color/design_default_color_background"
+        app:boxStrokeColor="@color/colorSecondary"
+        app:boxStrokeWidth="3dp"
+        app:helperText="@string/required_help_text"
+        app:helperTextTextColor="@color/colorSecondary"
+        app:hintTextColor="@color/colorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountDetailsHeadline"
+        app:startIconDrawable="@drawable/person_24"
+        app:startIconTint="@color/colorSecondary"
+        app:startIconTintMode="src_in">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fullName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autofillHints=""
+            android:background="@android:color/white"
+            android:ems="10"
+            android:fontFamily="@font/hind_light"
+            android:inputType="textPersonName|textCapWords"
+            android:minHeight="48dp"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/usernameInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:hint="@string/username"
+        app:boxBackgroundColor="@color/design_default_color_background"
+        app:boxStrokeColor="@color/colorSecondary"
+        app:boxStrokeWidth="3dp"
+        app:helperText="@string/required_help_text"
+        app:helperTextTextColor="@color/colorSecondary"
+        app:hintTextColor="@color/colorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fullNameInputLayout"
+        app:startIconDrawable="@drawable/person_24"
+        app:startIconTint="@color/colorSecondary"
+        app:startIconTintMode="src_in">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:autofillHints=""
+            android:background="@android:color/white"
+            android:ems="10"
+            android:fontFamily="@font/hind_light"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:hint="@string/email"
+        app:boxBackgroundColor="@color/design_default_color_background"
+        app:boxStrokeColor="@color/colorSecondary"
+        app:boxStrokeWidth="3dp"
+        app:helperText="@string/required_help_text"
+        app:helperTextTextColor="@color/colorSecondary"
+        app:hintTextColor="@color/colorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameInputLayout"
+        app:startIconDrawable="@drawable/mail_24"
+        app:startIconTint="@color/colorSecondary"
+        app:startIconTintMode="src_in">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:autofillHints=""
+            android:background="@android:color/white"
+            android:ems="10"
+            android:fontFamily="@font/hind_light"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="18sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:hint="@string/password"
+        app:boxBackgroundColor="@color/design_default_color_background"
+        app:boxStrokeColor="@color/colorSecondary"
+        app:boxStrokeWidth="3dp"
+        app:helperText="@string/required_help_text"
+        app:helperTextTextColor="@color/colorSecondary"
+        app:hintTextColor="@color/colorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailInputLayout"
+        app:passwordToggleEnabled="true"
+        app:startIconDrawable="@drawable/lock_24"
+        app:startIconTint="@color/colorSecondary"
+        app:startIconTintMode="src_in">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:autofillHints=""
+            android:background="@android:color/white"
+            android:ems="10"
+            android:fontFamily="@font/hind_light"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/ownerRegisterNextPageButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/white"
+        android:fontFamily="@font/hind_light"
+        android:text="@string/continue_to_next"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/design_default_color_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout"
+        app:rippleColor="@color/colorSecondary" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

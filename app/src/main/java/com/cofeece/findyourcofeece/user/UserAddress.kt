@@ -1,14 +1,18 @@
 package com.cofeece.findyourcofeece.user
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 enum class AddressDetails {
     STREET, CITY, COUNTRY
 }
 
 
-
+@Parcelize
 class UserAddress(private val street: String,
                   private val city: String,
-                  private val country: String) {
+                  private val country: String)
+    : Parcelable {
 
 
     constructor(): this("","","")

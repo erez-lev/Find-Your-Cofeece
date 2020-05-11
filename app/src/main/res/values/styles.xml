@@ -5,8 +5,12 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSecondary">#F9AA33</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="floatingActionButtonStyle">@style/FloatingActionButton.App</item>
+        <item name="android:editTextStyle">@style/EditTextTheme</item>
 
     </style>
 
@@ -18,7 +22,33 @@
     <style name="EditTextTheme" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnBackground">@android:color/white</item>
+        <item name="boxBackgroundColor">@color/design_default_color_background</item>
         <item name="boxStrokeColor">@color/colorSecondary</item>
+        <item name="boxStrokeWidth">3dp</item>
+        <item name="helperText">@string/required_help_text</item>
+        <item name="hintTextColor">@android:color/darker_gray</item>
+        <item name="startIconTint">@color/colorSecondary</item>
+        <item name="startIconTintMode">src_in</item>
         <item name="helperTextTextColor">@color/colorSecondary</item>
     </style>
+
+
+    <style name="ShapeAppearance.App.SmallComponent"
+        parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+        <item name="backgroundTint">@color/design_default_color_background</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="fontFamily">@font/hind_light</item>
+        <item name="rippleColor">@color/colorSecondary</item>
+        <item name="android:minHeight">60dp</item>
+    </style>
+
+    <style name="FloatingActionButton.App"
+        parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/colorSecondary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="iconTint">@color/colorPrimary</item>
+    </style>
+
 </resources>

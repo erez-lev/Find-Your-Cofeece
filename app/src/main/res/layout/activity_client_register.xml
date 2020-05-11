@@ -2,12 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clientRegisterLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ClientRegisterActivity">
 
     <ViewFlipper
         android:id="@+id/clientViewFlipper"
+        style="@style/AppTheme"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,7 +21,6 @@
             android:background="@color/colorPrimary"
             android:fitsSystemWindows="true"
             android:orientation="vertical"
-            android:padding="16dp"
             android:visibility="visible"
             tools:visibility="visible">
 
@@ -46,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="center"
                 android:hint="@string/full_name"
@@ -179,8 +180,6 @@
                     android:layout_height="match_parent"
                     android:autofillHints=""
                     android:background="@android:color/white"
-                    android:drawableStart="@drawable/lock_24"
-                    android:drawablePadding="8dp"
                     android:ems="10"
                     android:fontFamily="@font/hind_light"
                     android:inputType="textPassword"
@@ -193,14 +192,13 @@
                 android:id="@+id/clientRegisterCntBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
+                android:layout_marginStart="80dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="100dp"
+                android:layout_marginEnd="80dp"
                 android:layout_marginBottom="24dp"
                 android:background="@android:color/white"
                 android:fontFamily="@font/hind_light"
-                android:maxWidth="150dp"
-                android:minHeight="40dp"
+                android:minHeight="48dp"
                 android:text="@string/continue_to_next"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
@@ -208,10 +206,10 @@
                 app:backgroundTint="@color/design_default_color_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/clientPasswordInputLayout"
-                app:layout_constraintVertical_bias="0.48000002" />
+                app:rippleColor="@color/colorSecondary" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -222,7 +220,6 @@
             android:background="@color/colorPrimary"
             android:fitsSystemWindows="true"
             android:orientation="vertical"
-            android:padding="16dp"
             android:visibility="visible"
             tools:visibility="visible">
 
@@ -250,7 +247,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="center"
                 android:hint="@string/card_name"
@@ -333,9 +330,7 @@
                 app:helperTextTextColor="@color/colorSecondary"
                 app:hintTextColor="@color/colorSecondary"
                 app:layout_constraintStart_toStartOf="@+id/cardNumberInputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/cardNumberInputLayout"
-                app:startIconTint="@color/colorSecondary"
-                app:startIconTintMode="src_in">
+                app:layout_constraintTop_toBottomOf="@+id/cardNumberInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/month"
@@ -367,9 +362,7 @@
                 app:helperTextTextColor="@color/colorSecondary"
                 app:hintTextColor="@color/colorSecondary"
                 app:layout_constraintBaseline_toBaselineOf="@+id/monthInputLayout"
-                app:layout_constraintStart_toEndOf="@+id/monthInputLayout"
-                app:startIconTint="@color/colorSecondary"
-                app:startIconTintMode="src_in">
+                app:layout_constraintStart_toEndOf="@+id/monthInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/year"
@@ -403,9 +396,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/yearInputLayout"
                 app:layout_constraintEnd_toEndOf="@+id/cardNumberInputLayout"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/yearInputLayout"
-                app:startIconTint="@color/colorSecondary"
-                app:startIconTintMode="src_in">
+                app:layout_constraintStart_toEndOf="@+id/yearInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/CVV"
@@ -426,13 +417,12 @@
                 android:id="@+id/clientFinishBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="100dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="118dp"
+                android:layout_marginEnd="80dp"
                 android:layout_marginBottom="8dp"
                 android:background="@color/design_default_color_background"
                 android:fontFamily="@font/hind_light"
-                android:maxWidth="150dp"
                 android:minHeight="40dp"
                 android:text="@string/finish"
                 android:textColor="@color/colorPrimary"
@@ -442,7 +432,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cvvInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/cvvInputLayout"
+                app:rippleColor="@color/colorSecondary" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

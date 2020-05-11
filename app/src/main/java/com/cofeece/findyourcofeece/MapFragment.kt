@@ -78,12 +78,10 @@ class MapFragment : Fragment(),
     private var mActivity: FragmentActivity? = null
     private lateinit var mMarker: BitmapDescriptor
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate: called")
+        super.onCreate(savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d(TAG, "onCreateView: called")
         // Initialization:
         mContext = this.context
         mActivity = this.activity
@@ -92,10 +90,21 @@ class MapFragment : Fragment(),
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.d(TAG, "onCreateView: called")
 
-        val rootView = inflater.inflate(R.layout.fragment_map, container, false)
-//        return inflater.inflate(R.layout.fragment_map, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_map, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated: called")
+        super.onViewCreated(view, savedInstanceState)
 
         try {
             val mapFragment =
@@ -105,16 +114,8 @@ class MapFragment : Fragment(),
             e.printStackTrace()
         }
 
-        // Inflate the layout for this fragment
-        return rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d(TAG, "onViewCreated: called")
-        super.onViewCreated(view, savedInstanceState)
-
         // Set markers on the map. The owner's restaurants.
-        setRestaurantsOnMap()
+//        setRestaurantsOnMap()
     }
 
 
@@ -124,10 +125,20 @@ class MapFragment : Fragment(),
 
         if (MainActivity.mCurrentUser == null) {
             Log.d(TAG, "onMapReady: current user is ${MainActivity.mCurrentUser}")
+            // The reserve button can not be visible for unregistered users.
+            if (reserveButton != null) {
+                reserveButton.visibility = View.GONE
+            } else {
+                Log.d(TAG, "onMapReady: reserve button wasn't created yet.")
+            }
+            // Send the user for registration when he doesn't have an account yet.
             mMap.setOnMapClickListener {
                 val intent = Intent(mContext, ClientHomeActivity::class.java)
                 startActivity(intent)
             }
+        } else {
+            // User can access functionality in the main activity.
+            reserveButton.visibility = View.VISIBLE
         }
 
         if (isPermissionGiven()) {
@@ -142,12 +153,103 @@ class MapFragment : Fragment(),
                     this.activity, R.raw.style_json
                 )
             )
-
 //            setRestaurantsOnMap()
         } else {
             givePermission()
         }
     }
+
+
+    private fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
+        Log.d(TAG, "getLocationFromAddress: called")
+        val coder = Geocoder(context)
+        val address: List<android.location.Address>?
+        var p1: LatLng? = null
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5)
+            if (address == null) {
+                return null
+            }
+            val location = address[0]
+            p1 = LatLng(location.latitude, location.longitude)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+        }
+        return p1
+    }
+
+
+    private fun createCustomMarker(): BitmapDescriptor {
+        val drawble = ContextCompat.getDrawable(mContext!!, R.drawable.ic_coffee_yellow_24dp)
+        if (drawble != null) {
+            drawble?.setBounds(0, 0, drawble.intrinsicWidth, drawble.intrinsicHeight)
+            val bitmap = Bitmap.createBitmap(
+                drawble.intrinsicWidth,
+                drawble.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            drawble.draw(canvas)
+
+            return BitmapDescriptorFactory.fromBitmap(bitmap)
+        } else {
+            throw NullPointerException("There was no bitmap to create.")
+        }
+
+    }
+
+    private fun setRestaurantsOnMap() {
+        Log.d(TAG, "setRestaurantsOnMap: called")
+        mMarker = createCustomMarker()
+
+        // Set markers on the map. The owner's restaurants.
+        mViewModel.loadOwners(object : MapsViewModel.OnDataCallback {
+            override fun onDataCallBack(owners: ArrayList<Owner>) {
+                    Log.d(TAG, "onDataCallBack: called")
+                    if (owners.isNotEmpty()) {
+                        for (owner in owners) {
+                            try {
+                                val ownerAddress = owner.getRestaurant().getAddress()
+                                Log.d(
+                                    TAG,
+                                    "setRestaurantsOnMap: owner's address is: ${ownerAddress.getAddress()}"
+                                )
+                                val latlng =
+                                    getLocationFromAddress(mContext, ownerAddress.getAddress())
+                                Log.d(
+                                    TAG,
+                                    "setRestaurantsOnMap: latitude is - ${latlng?.latitude}," +
+                                            " longitude is - ${latlng?.longitude} "
+                                )
+                                if (latlng != null) {
+                                    mMap.addMarker(
+                                        MarkerOptions()
+                                            .position(latlng)
+                                            .title(owner.getRestaurant().getName())
+                                            .snippet(
+                                                owner.getRestaurant().getAddress().getAddress()
+                                            )
+                                            .icon(mMarker)
+//                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                                    )
+
+                                } else {
+                                    Log.d(TAG, "setRestaurantsOnMap: latlng is null")
+                                }
+                            } catch (e: NullPointerException) {
+                                e.printStackTrace()
+                            } catch (e: IndexOutOfBoundsException) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                }
+
+        })
+
+    }
+
 
 
     private fun isPermissionGiven(): Boolean {

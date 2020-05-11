@@ -1,6 +1,10 @@
 package com.cofeece.findyourcofeece.user
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 private const val TAG = "User"
+
 internal const val NAME = "Name"
 internal const val USERNAME = "UserName"
 internal const val EMAIL = "Email"
@@ -14,12 +18,4 @@ open class User(
 ) {
     /** Properties: */
     protected var id: String = ""
-
-    /** Methods: */
-    fun error() {
-        throw Exception("User's properties are empty!")
-    }
-
-    /** Interfaces: */
-
 }

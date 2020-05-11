@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.core.widget.addTextChangedListener
 
 import com.cofeece.findyourcofeece.client.Client
 import com.cofeece.findyourcofeece.firebase.AuthenticationManager
@@ -20,8 +21,10 @@ private const val TAG = "ClientRegisterActivity"
 
 class ClientRegisterActivity : AppCompatActivity() {
 
+    /** Properties: */
     private val db = DatabaseManager()
     private val auth = AuthenticationManager()
+
     lateinit var mCurrent: Client
 
     private val mDetailList by lazy {
@@ -38,11 +41,17 @@ class ClientRegisterActivity : AppCompatActivity() {
         )
     }
 
+
+    /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client_register)
 
         this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Checks wherever the edit text was filled or not. Prompt with an error if is need to.
+        checkTextChange()
+
 
         // Set client account details and move to payment.
         clientRegisterCntBtn.setOnClickListener {
@@ -66,7 +75,7 @@ class ClientRegisterActivity : AppCompatActivity() {
             if (paymentDetailsEntered()) {
                 // TODO; fill client's payment attributes.
                 insertClientToDatabase()
-                auth.signUp(mCurrent, object: AuthenticationManager.AuthenticationCallback {
+                auth.signUp(mCurrent, object : AuthenticationManager.AuthenticationCallback {
                     override fun onCallback(user: User) {
                         Log.d(TAG, "onCallback: user is $user")
                         Log.d(TAG, "onCallback: current client is $mCurrent")
@@ -84,7 +93,7 @@ class ClientRegisterActivity : AppCompatActivity() {
             android.R.id.home -> {
                 Log.d(TAG, "onOptionsItemSelected: home button clicked")
                 if (clientViewFlipper.currentView == findViewById(R.id.clientAccountDetailsLayout)) {
-                    // If the user wants to go back to the main activity(maps activity). We should let him.
+                    // If the user wants to go back to the owner home activity. We should let him.
                     Log.d(
                         TAG,
                         "onOptionsItemSelected: current view is ${clientViewFlipper.currentView.id}"
@@ -106,12 +115,29 @@ class ClientRegisterActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /** Class Methods: */
     private fun insertClientToDatabase() {
         db.writeToDatabase(user = mCurrent, type = CLIENTS)
     }
 
+    private fun checkTextChange() {
+        for (detail in mDetailList) {
+            detail.addTextChangedListener {
+                if (it.isNullOrBlank() || it.isNullOrEmpty()) {
+                    (detail.parent.parent as TextInputLayout)
+                        .error = "Please enter a ${detail.hint}"
+                } else {
+                    (detail.parent.parent as TextInputLayout)
+                        .isErrorEnabled = false
+                }
+            }
+        }
+    }
+
+
     private fun noDetailUser(ownerDetail: TextInputEditText): Boolean =
         (ownerDetail.text.isNullOrEmpty() || ownerDetail.text.isNullOrBlank())
+
 
     private fun accountDetailsEntered(): Boolean {
         val accountDetails = arrayListOf<TextInputEditText>(
@@ -136,6 +162,7 @@ class ClientRegisterActivity : AppCompatActivity() {
         return areEntered
     }
 
+
     private fun paymentDetailsEntered(): Boolean {
         val paymentDtails = arrayListOf<TextInputEditText>(
             clientCardName,
@@ -151,7 +178,8 @@ class ClientRegisterActivity : AppCompatActivity() {
             if (noDetailUser(detail)) {
                 if (detail == month
                     || detail == year
-                    || detail == CVV) {
+                    || detail == CVV
+                ) {
                     detail.error = "Please enter a number"
                 } else {
                     (detail.parent.parent as TextInputLayout).error =
@@ -161,7 +189,7 @@ class ClientRegisterActivity : AppCompatActivity() {
             }
             areEntered = true
         }
-      return areEntered
+        return areEntered
 
     }
 
