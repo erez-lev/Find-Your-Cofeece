@@ -1,14 +1,14 @@
 package com.cofeece.findyourcofeece.owner
 
-
+/** Enums: */
 enum class BankDetails {
     NAME, ACCOUNT, BRANCH
 }
 
-
 class Bank(private var name: String, private var account: String, private var branch: String) {
 
-    constructor(): this("","","")
+    /** Constructors: */
+    constructor() : this("", "", "")
 
     /** Gets: */
     fun getName(): String = name
@@ -20,5 +20,4 @@ class Bank(private var name: String, private var account: String, private var br
     fun setName(name: String) {
         this.name = name
     }
-
 }

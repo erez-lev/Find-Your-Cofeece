@@ -12,26 +12,22 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 
-
 private const val TAG = "DatabaseManager"
 
+/** Constants: */
 internal const val CLIENTS = "Clients"
 internal const val OWNERS = "Owners"
 
-
-
-
 class DatabaseManager() {
-
-    interface OnDataCallBack {
-        fun onOwnerDataCallBack(owners: ArrayList<Owner>)
-        fun onClientDataCallBack(clients: ArrayList<Client>)
-    }
-
     /** Properties: */
     var owners = ArrayList<Owner>()
     var clients = ArrayList<Client>()
 
+    /** Interfaces: */
+    interface OnDataCallBack {
+        fun onOwnerDataCallBack(owners: ArrayList<Owner>)
+        fun onClientDataCallBack(clients: ArrayList<Client>)
+    }
 
     /** References: */
     val clientRef = FirebaseManager.database.getReference(CLIENTS)
@@ -66,7 +62,6 @@ class DatabaseManager() {
 
     private fun isPropertiesEmpty(user: User): Boolean =
         user.name.isEmpty() || user.username.isEmpty() || user.email.isEmpty() || user.password.isEmpty()
-
 
 
     fun readFromDatabase(type: String, callBack: OnDataCallBack) {

@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_client_home.*
 
 class ClientHomeActivity : AppCompatActivity() {
 
+    /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client_home)

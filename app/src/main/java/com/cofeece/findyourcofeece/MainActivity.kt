@@ -27,13 +27,15 @@ private const val TAG = "MainActivity"
 class MainActivity :
     AppCompatActivity() {
 
-    companion object {
-        var mCurrentUser: FirebaseUser? = null
-    }
+    /** Properties: */
     var mOwners = ArrayList<Owner>()
     private var mDatabase = DatabaseManager()
 
+    companion object {
+        var mCurrentUser: FirebaseUser? = null
+    }
 
+    /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: called")
         super.onCreate(savedInstanceState)
@@ -57,7 +59,6 @@ class MainActivity :
 
     override fun onStart() {
         super.onStart()
-
         // Initializing current user.
         mCurrentUser = AuthenticationManager().mAuth.currentUser
         Log.d(TAG, "onStart: current user is $mCurrentUser")
@@ -82,5 +83,4 @@ class MainActivity :
         }
         return super.onOptionsItemSelected(item)
     }
-
 }

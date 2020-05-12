@@ -1,10 +1,10 @@
 package com.cofeece.findyourcofeece.owner
 
-import android.location.Address
 import android.os.Parcelable
 import com.cofeece.findyourcofeece.user.UserAddress
 import kotlinx.android.parcel.Parcelize
 
+/** Enums: */
 enum class RestaurantDetails {
     RESTAURANT, ADDRESS
 }
@@ -12,7 +12,8 @@ enum class RestaurantDetails {
 @Parcelize
 class Restaurant(private var name: String, private var address: UserAddress) : Parcelable {
 
-    constructor(): this("",UserAddress())
+    /** Constructors: */
+    constructor() : this("", UserAddress())
 
     /** Gets: */
     fun getName(): String = name

@@ -51,9 +51,10 @@ import kotlinx.android.synthetic.main.fragment_map.*
 
 import java.io.IOException
 import java.util.*
-import kotlin.concurrent.thread
 
 private const val TAG = "MapFragment"
+
+/** Constants: */
 const val REQUEST_CHECK_SETTINGS = 43
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,6 +79,7 @@ class MapFragment : Fragment(),
     private var mActivity: FragmentActivity? = null
     private lateinit var mMarker: BitmapDescriptor
 
+    /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: called")
         super.onCreate(savedInstanceState)
@@ -159,7 +161,7 @@ class MapFragment : Fragment(),
         }
     }
 
-
+    /** Class Methods: */
     private fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
         Log.d(TAG, "getLocationFromAddress: called")
         val coder = Geocoder(context)
@@ -206,50 +208,49 @@ class MapFragment : Fragment(),
         // Set markers on the map. The owner's restaurants.
         mViewModel.loadOwners(object : MapsViewModel.OnDataCallback {
             override fun onDataCallBack(owners: ArrayList<Owner>) {
-                    Log.d(TAG, "onDataCallBack: called")
-                    if (owners.isNotEmpty()) {
-                        for (owner in owners) {
-                            try {
-                                val ownerAddress = owner.getRestaurant().getAddress()
-                                Log.d(
-                                    TAG,
-                                    "setRestaurantsOnMap: owner's address is: ${ownerAddress.getAddress()}"
-                                )
-                                val latlng =
-                                    getLocationFromAddress(mContext, ownerAddress.getAddress())
-                                Log.d(
-                                    TAG,
-                                    "setRestaurantsOnMap: latitude is - ${latlng?.latitude}," +
-                                            " longitude is - ${latlng?.longitude} "
-                                )
-                                if (latlng != null) {
-                                    mMap.addMarker(
-                                        MarkerOptions()
-                                            .position(latlng)
-                                            .title(owner.getRestaurant().getName())
-                                            .snippet(
-                                                owner.getRestaurant().getAddress().getAddress()
-                                            )
-                                            .icon(mMarker)
+                Log.d(TAG, "onDataCallBack: called")
+                if (owners.isNotEmpty()) {
+                    for (owner in owners) {
+                        try {
+                            val ownerAddress = owner.getRestaurant().getAddress()
+                            Log.d(
+                                TAG,
+                                "setRestaurantsOnMap: owner's address is: ${ownerAddress.getAddress()}"
+                            )
+                            val latlng =
+                                getLocationFromAddress(mContext, ownerAddress.getAddress())
+                            Log.d(
+                                TAG,
+                                "setRestaurantsOnMap: latitude is - ${latlng?.latitude}," +
+                                        " longitude is - ${latlng?.longitude} "
+                            )
+                            if (latlng != null) {
+                                mMap.addMarker(
+                                    MarkerOptions()
+                                        .position(latlng)
+                                        .title(owner.getRestaurant().getName())
+                                        .snippet(
+                                            owner.getRestaurant().getAddress().getAddress()
+                                        )
+                                        .icon(mMarker)
 //                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-                                    )
+                                )
 
-                                } else {
-                                    Log.d(TAG, "setRestaurantsOnMap: latlng is null")
-                                }
-                            } catch (e: NullPointerException) {
-                                e.printStackTrace()
-                            } catch (e: IndexOutOfBoundsException) {
-                                e.printStackTrace()
+                            } else {
+                                Log.d(TAG, "setRestaurantsOnMap: latlng is null")
                             }
+                        } catch (e: NullPointerException) {
+                            e.printStackTrace()
+                        } catch (e: IndexOutOfBoundsException) {
+                            e.printStackTrace()
                         }
                     }
                 }
+            }
 
         })
 
     }
-
 
 
     private fun isPermissionGiven(): Boolean {

@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.widget.addTextChangedListener
+
 import com.cofeece.findyourcofeece.owner.AccountDetails
 import com.cofeece.findyourcofeece.owner.Restaurant
 import com.cofeece.findyourcofeece.owner.RestaurantDetails
-import com.cofeece.findyourcofeece.user.AddressDetails
+
 import com.cofeece.findyourcofeece.user.UserAddress
+
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+
 import kotlinx.android.synthetic.main.activity_register_restaurant_details.*
 
 private const val TAG = "RegisterRestaurantDetai"
@@ -37,9 +40,9 @@ class RegisterRestaurantDetails : AppCompatActivity() {
                 val restaurant = Restaurant(
                     restaurantName.text.toString(),
                     UserAddress(
-                    ownerStreet.text.toString(),
-                    ownerCity.text.toString(),
-                    ownerCountry.text.toString()
+                        ownerStreet.text.toString(),
+                        ownerCity.text.toString(),
+                        ownerCountry.text.toString()
                     )
                 )
                 val intent = Intent(this, RegisterBankDetails::class.java)

@@ -1,8 +1,6 @@
 package com.cofeece.findyourcofeece.firebase
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.cofeece.findyourcofeece.user.User
 import com.google.firebase.auth.FirebaseUser
 
@@ -12,6 +10,7 @@ class AuthenticationManager {
     /** Properties: */
     val mAuth = FirebaseManager.authentication
 
+    /** Interfaces: */
     interface AuthenticationCallback {
         fun onCallback(user: User)
     }
@@ -22,14 +21,22 @@ class AuthenticationManager {
         mAuth.createUserWithEmailAndPassword(user.email, user.password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Log.d(TAG, "signUp: createUserWithEmailAndPassword: registered completed. User is ${mAuth.currentUser}")
+                    Log.d(
+                        TAG,
+                        "signUp: createUserWithEmailAndPassword: registered completed. User is ${mAuth.currentUser}"
+                    )
                     val currentUser: FirebaseUser? = mAuth.currentUser
-                    Log.d(TAG, "signUp: createUserWithEmailAndPassword: registered completed. User is $currentUser")
+                    Log.d(
+                        TAG,
+                        "signUp: createUserWithEmailAndPassword: registered completed. User is $currentUser"
+                    )
                 } else {
-                    Log.d(TAG, "signUp: createUserWithEmailAndPassword: registered completed unsecceefully." +
-                            " User is ${mAuth.currentUser}")
+                    Log.d(
+                        TAG,
+                        "signUp: createUserWithEmailAndPassword: registered completed unsecceefully." +
+                                " User is ${mAuth.currentUser}"
+                    )
                 }
             }
     }
-
 }

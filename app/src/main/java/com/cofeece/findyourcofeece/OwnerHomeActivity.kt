@@ -7,10 +7,12 @@ import android.widget.Button
 
 class OwnerHomeActivity : AppCompatActivity() {
 
+    /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner_home)
 
+        // TODO: implement sign activity
 //        val signIn = findViewById<Button>(R.id.ownerSignIn)
 //        signIn.setOnClickListener {
 //            val goToLoginPage = Intent(this, OwnerLoginActivity::class.java)

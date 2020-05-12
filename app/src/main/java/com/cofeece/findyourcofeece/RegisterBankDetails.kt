@@ -15,7 +15,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 import kotlinx.android.synthetic.main.activity_register_bank_details.*
-import kotlinx.android.synthetic.main.activity_register_restaurant_details.*
 
 private const val TAG = "RegisterBankDetails"
 
@@ -42,7 +41,8 @@ class RegisterBankDetails : AppCompatActivity() {
             password!!
         )
 
-        val restaurant: Restaurant? = intent.getParcelableExtra(RestaurantDetails.RESTAURANT.toString())
+        val restaurant: Restaurant? =
+            intent.getParcelableExtra(RestaurantDetails.RESTAURANT.toString())
         if (restaurant != null) {
             owner.setRestaurant(restaurant)
         }
@@ -52,11 +52,13 @@ class RegisterBankDetails : AppCompatActivity() {
         // Set the bank details, finish registration.
         finishBtn.setOnClickListener {
             if (bankDetailsEntered()) {
-                owner.setBank(Bank(
-                    ownerBankName.text.toString(),
-                    ownerAccountNumber.text.toString(),
-                    ownerBankBranch.text.toString()
-                ))
+                owner.setBank(
+                    Bank(
+                        ownerBankName.text.toString(),
+                        ownerAccountNumber.text.toString(),
+                        ownerBankBranch.text.toString()
+                    )
+                )
 
                 insertOwnerToDatabase(owner)
                 // TODO: Set intent, and start new activity.

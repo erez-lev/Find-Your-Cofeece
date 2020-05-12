@@ -1,6 +1,5 @@
 package com.cofeece.findyourcofeece
 
-import android.accounts.Account
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 
