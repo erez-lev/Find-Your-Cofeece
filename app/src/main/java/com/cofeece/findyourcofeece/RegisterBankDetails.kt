@@ -1,5 +1,6 @@
 package com.cofeece.findyourcofeece
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
@@ -61,7 +62,8 @@ class RegisterBankDetails : AppCompatActivity() {
                 )
 
                 insertOwnerToDatabase(owner)
-                // TODO: Set intent, and start new activity.
+                val intent = Intent(this, OwnerMenuActivity::class.java)
+                startActivity(intent)
             } else {
                 Log.d(TAG, "onCreate: user clicked finish before filled all details required")
 //                Toast.makeText(this, "Please fill all details.", Toast.LENGTH_LONG).show()

@@ -26,7 +26,7 @@ class DatabaseManager() {
     /** Interfaces: */
     interface OnDataCallBack {
         fun onOwnerDataCallBack(owners: ArrayList<Owner>)
-        fun onClientDataCallBack(clients: ArrayList<Client>)
+//        fun onClientDataCallBack(clients: ArrayList<Client>)
     }
 
     /** References: */
@@ -39,10 +39,9 @@ class DatabaseManager() {
             when (type) {
                 CLIENTS -> {
                     val client = user as Client
+                    client.setClientId(clientRef.push().key as String)
                     Log.d(TAG, "$user is being added to the database as $CLIENTS")
-                    clientRef.child(CLIENTS).child(OwnerChildren.ACCOUNT.toString())
-                        . // TODO: change the child to the Client details.
-                        setValue(user)
+                    clientRef.child(client.getClientId()).setValue(client)
                 }
                 OWNERS -> {
                     val owner = user as Owner
@@ -82,7 +81,6 @@ class DatabaseManager() {
                             )
                         }
                         callBack.onOwnerDataCallBack(owners)
-
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -110,5 +108,4 @@ class DatabaseManager() {
             }
         }
     }
-
 }

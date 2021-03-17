@@ -16,6 +16,7 @@ import com.cofeece.findyourcofeece.user.User
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_client_register.*
+import kotlin.concurrent.thread
 
 private const val TAG = "ClientRegisterActivity"
 
@@ -52,7 +53,6 @@ class ClientRegisterActivity : AppCompatActivity() {
         // Checks wherever the edit text was filled or not. Prompt with an error if is need to.
         checkTextChange()
 
-
         // Set client account details and move to payment.
         clientRegisterCntBtn.setOnClickListener {
             if (accountDetailsEntered()) {
@@ -73,14 +73,23 @@ class ClientRegisterActivity : AppCompatActivity() {
         // Set payment details and register client to database.
         clientFinishBtn.setOnClickListener {
             if (paymentDetailsEntered()) {
-                // TODO; fill client's payment attributes.
-                insertClientToDatabase()
-                auth.signUp(mCurrent, object : AuthenticationManager.AuthenticationCallback {
-                    override fun onCallback(user: User) {
-                        Log.d(TAG, "onCallback: user is $user")
-                        Log.d(TAG, "onCallback: current client is $mCurrent")
-                    }
-                })
+                mCurrent.setPayment(
+                    clientCardName.text.toString(),
+                    clientCardNumber.text.toString(),
+                    month.text.toString(),
+                    year.text.toString(),
+                    CVV.text.toString()
+                )
+                thread {
+                    insertClientToDatabase()
+                }.id
+
+                val userAsClient: User = mCurrent
+                Log.d(TAG, "Before authentication called, user name is ${userAsClient.name}")
+                auth.signUp(userAsClient)
+
+                val intent = Intent(this, ClientHomeActivity::class.java)
+                startActivity(intent)
             } else {
                 disableError()
             }

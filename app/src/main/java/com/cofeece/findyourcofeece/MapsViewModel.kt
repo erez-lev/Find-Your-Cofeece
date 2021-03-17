@@ -1,5 +1,6 @@
 package com.cofeece.findyourcofeece
 
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.*
 
@@ -12,20 +13,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 import java.util.*
+import java.util.logging.Handler
 import kotlin.collections.ArrayList
 
-private const val TAG = "MapsViewModel"
-
 /** Constants: */
-val EMPTY_OWNER_LIST: List<Owner> = Collections.emptyList()
+private val TAG = "MapsViewModel"
+val EMPTY_OWNER_LIST: MutableList<Owner> = Collections.emptyList()
 
 class MapsViewModel : ViewModel() {
-
     /** Properties: */
     private val db = DatabaseManager()
-    private val owners = MutableLiveData<List<Owner>>()
-    val ownerList: LiveData<List<Owner>>
-        get() = owners
+    private var owners = EMPTY_OWNER_LIST
 
     /** Interfaces: */
     interface OnDataCallback {
@@ -35,15 +33,14 @@ class MapsViewModel : ViewModel() {
     /** Methods: */
     init {
         Log.d(TAG, "init: called")
-        owners.postValue(EMPTY_OWNER_LIST)
     }
 
+    fun getOwnerList(): MutableList<Owner> = owners
 
     fun setOwnerList(owners: ArrayList<Owner>) {
         Log.d(TAG, "setOwnerList: called")
 
-        this.owners.postValue(owners)
-        Log.d(TAG, "loadOwners: onDataChanged: owners value is ${this.owners.value}")
+        Log.d(TAG, "loadOwners: onDataChanged: owners value is ${this.owners}")
     }
 
 

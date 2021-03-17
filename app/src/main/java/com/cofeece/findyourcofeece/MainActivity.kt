@@ -24,17 +24,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 private const val TAG = "MainActivity"
 
-class MainActivity :
-    AppCompatActivity() {
-
-    /** Properties: */
-    var mOwners = ArrayList<Owner>()
-    private var mDatabase = DatabaseManager()
-
-    companion object {
-        var mCurrentUser: FirebaseUser? = null
-    }
-
+class MainActivity : AppCompatActivity() {
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: called")
@@ -42,45 +32,13 @@ class MainActivity :
         setContentView(R.layout.activity_main)
 
         ownerSideButton.setOnClickListener {
-            Snackbar.make(
-                it,
-                "For going to owner's side, please click a long tap.",
-                Snackbar.LENGTH_LONG
-            ).setAnchorView(it)
-                .show()
-        }
-
-        ownerSideButton.setOnLongClickListener {
             val intent = Intent(this, OwnerHomeActivity::class.java)
             startActivity(intent)
-            true
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        // Initializing current user.
-        mCurrentUser = AuthenticationManager().mAuth.currentUser
-        Log.d(TAG, "onStart: current user is $mCurrentUser")
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-
-//            R.id.viewRestaurantList -> // TODO: show the restaurants list, the default in 5 km.
-
-//            R.id.fiveKmRestaurantsDistance -> //TODO: show the restaurants which are 5km distance in the list.
-
-//            R.id.tenKmRestaurantsDistance -> //TODO: show the restaurants which are 10km distance in the list.
-
+        clientSideButton.setOnClickListener {
+            val intent = Intent(this, ClientHomeActivity::class.java)
+            startActivity(intent)
         }
-        return super.onOptionsItemSelected(item)
     }
 }

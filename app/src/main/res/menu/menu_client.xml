@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/timerMenuItem"
+        android:icon="@drawable/ic_baseline_timer_24"
+        android:orderInCategory="1"
+        android:title="@string/timer_client_menu"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/mapMenuItem"
+        android:icon="@drawable/ic_baseline_map_24"
+        android:orderInCategory="2"
+        android:title="@string/explore_client_menu"
+        app:showAsAction="ifRoom" />
+</menu>

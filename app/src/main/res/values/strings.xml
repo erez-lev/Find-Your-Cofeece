@@ -6,17 +6,17 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="login">Login</string>
-    <string name="email">"Email"</string>
-    <string name="password">"Password"</string>
-    <string name="full_name">"Full Name"</string>
-    <string name="username">"Username"</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="username">Username</string>
     <string name="continue_to_next">Continue</string>
-    <string name="business_name">"Business Name"</string>
-    <string name="street">"Street and House Number"</string>
-    <string name="country">"Country"</string>
-    <string name="city">"City"</string>
-    <string name="bank_number">"Bank Number"</string>
-    <string name="account_number">"Account Number"</string>
+    <string name="business_name">Business Name</string>
+    <string name="street">Street and House Number</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="bank_number">Bank Number</string>
+    <string name="account_number">Account Number</string>
     <string name="bank_branch">"Branch"</string>
     <string name="finish">Finish</string>
     <string name="done">Done</string>
@@ -39,4 +39,16 @@
     <string name="required_help_text">Required</string>
     <string name="welcome_client">Welcome</string>
     <string name="reserve">Reserve</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_revenue">Revenues</string>
+    <string name="menu_deals">Deals</string>
+    <string name="menu_settings">Settings</string>
+    <string name="owners_textview">Owner</string>
+    <string name="customers_textview">Customer</string>
+    <string name="choose_side_headline">Choose A Side</string>
+    <string name="explore_client_menu">Explore</string>
+    <string name="timer_client_menu">Timer</string>
+
+    <string name="start_time_timer">00:00:00</string>
+    <string name="timer_start_hint">Press the timer to start time</string>
 </resources>

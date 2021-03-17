@@ -18,8 +18,7 @@ class Owner(
     username: String,
     email: String,
     password: String
-) :
-    User(name, username, email, password) {
+) : User(name, username, email, password) {
 
     /** Properties: */
     private lateinit var restaurant: Restaurant
@@ -34,9 +33,7 @@ class Owner(
 
     /** Gets: */
     fun getOwnerId(): String = id
-
     fun getRestaurant(): Restaurant = restaurant
-
     fun getBank(): Bank = bank
 
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clientMenuLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="8"
+    tools:context=".ClientMenuActivity">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.cofeece.findyourcofeece.TimerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        tools:layout="@layout/fragment_timer" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/design_default_color_on_primary"
+        app:itemTextColor="#FFFFFF"
+        app:menu="@menu/menu_client"
+        tools:visibility="visible" />
+</LinearLayout>

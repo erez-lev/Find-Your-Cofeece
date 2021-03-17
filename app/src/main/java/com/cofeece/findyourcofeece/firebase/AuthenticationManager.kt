@@ -16,8 +16,8 @@ class AuthenticationManager {
     }
 
     /** Methods: */
-    fun signUp(user: User, callback: AuthenticationCallback) {
-        callback.onCallback(user)
+    fun signUp(user: User) {
+        //callback.onCallback(user)
         mAuth.createUserWithEmailAndPassword(user.email, user.password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
@@ -34,7 +34,7 @@ class AuthenticationManager {
                     Log.d(
                         TAG,
                         "signUp: createUserWithEmailAndPassword: registered completed unsecceefully." +
-                                " User is ${mAuth.currentUser}"
+                                " User is $user"
                     )
                 }
             }

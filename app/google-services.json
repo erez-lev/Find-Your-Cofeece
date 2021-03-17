@@ -1,77 +1,41 @@
 {
   "project_info": {
-    "project_number": "386304527408",
-    "firebase_url": "https://cofeece-e4aee.firebaseio.com",
-    "project_id": "cofeece-e4aee",
-    "storage_bucket": "cofeece-e4aee.appspot.com"
+    "project_number": "296408097817",
+    "project_id": "find-your-cofeece",
+    "storage_bucket": "find-your-cofeece.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:386304527408:android:c11bf45fdff278acc7b1f5",
-        "android_client_info": {
-          "package_name": "com.cofeece.cofeece"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "386304527408-c1pv9854mvuba4n2rulg2kbj0ucu8r7p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cofeece.cofeece",
-            "certificate_hash": "fbc3f8cfc84b96b9499ddd6e719a8ea389806ec7"
-          }
-        },
-        {
-          "client_id": "386304527408-avik5kqj49cdfav1ar5lh6emtq83r3ei.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB5MdSwHx1HIcNLG-QtyalEDH9UkPxv7Vk"
-        },
-        {
-          "current_key": "AIzaSyACQDieoO8UmImX9WruP5QgRmsmnxVC4YI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "386304527408-avik5kqj49cdfav1ar5lh6emtq83r3ei.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:386304527408:android:5f4f48b6fefffd78c7b1f5",
+        "mobilesdk_app_id": "1:296408097817:android:8dec79ce8d50907ec0f688",
         "android_client_info": {
           "package_name": "com.cofeece.findyourcofeece"
         }
       },
       "oauth_client": [
         {
-          "client_id": "386304527408-avik5kqj49cdfav1ar5lh6emtq83r3ei.apps.googleusercontent.com",
+          "client_id": "296408097817-9m4m99462am5seg76nba4k1rrq9c9bqf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cofeece.findyourcofeece",
+            "certificate_hash": "11ea13433291e055bb9134c27821e6a7b81fd32d"
+          }
+        },
+        {
+          "client_id": "296408097817-37hf7vr49danaogu9eiscle7c2ak24t7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB5MdSwHx1HIcNLG-QtyalEDH9UkPxv7Vk"
-        },
-        {
-          "current_key": "AIzaSyACQDieoO8UmImX9WruP5QgRmsmnxVC4YI"
+          "current_key": "AIzaSyAlHbqBbk--UDj6pig_nDyL6Z_238WoOLI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "386304527408-avik5kqj49cdfav1ar5lh6emtq83r3ei.apps.googleusercontent.com",
+              "client_id": "296408097817-37hf7vr49danaogu9eiscle7c2ak24t7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
