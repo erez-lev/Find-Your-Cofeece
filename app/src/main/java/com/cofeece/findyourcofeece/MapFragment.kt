@@ -532,7 +532,7 @@ class MapFragment :
         // Sensor enabled
         val sensor = "sensor=false"
         val mode = "mode=driving"
-        val apiKey = "key=AIzaSyAlHbqBbk--UDj6pig_nDyL6Z_238WoOLI"
+        val apiKey = "key=MY_API_KEY" // Need to replace "MY_API_KEY" with my real api key from google, for this to work.
         // Building the parameters to the web service
         val parameters = "$str_origin&$str_dest&$sensor&$mode&$apiKey"
 
