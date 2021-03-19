@@ -10,6 +10,7 @@ import com.cofeece.findyourcofeece.owner.OwnerChildren
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlin.concurrent.thread
 
 
 private const val TAG = "DatabaseManager"
@@ -45,6 +46,7 @@ class DatabaseManager() {
                 }
                 OWNERS -> {
                     val owner = user as Owner
+                    Log.d(TAG, "writeToDatabase: ownerRef is ${ownerRef}")
                     owner.setOwnerId(ownerRef.push().key as String)
                     Log.d(TAG, "writeToDatabase: user's id is ${owner.getOwnerId()}")
                     Log.d(TAG, "$user is being added to the database as $OWNERS")
@@ -66,46 +68,54 @@ class DatabaseManager() {
     fun readFromDatabase(type: String, callBack: OnDataCallBack) {
         when (type) {
             OWNERS -> {
-                ownerRef.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        for (snapshot: DataSnapshot in dataSnapshot.children) {
-                            val owner = snapshot.getValue(Owner::class.java)
-
-                            if (owner != null)
-                                owners.add(owner)
-                            Log.d(
-                                TAG,
-                                "readFromDatabase: onDataChange: owner's name is ${owners[0].name}"
-                            )
-                        }
-                        callBack.onOwnerDataCallBack(owners)
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
-                        Log.w(TAG, "Failed to read value.", error.toException())
-                    }
-                })
+                readOwnersData(callBack)
             }
 
             CLIENTS -> {
-                clientRef.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        val value =
-                            dataSnapshot.getValue(String::class.java)
-                        Log.d(TAG, "Value is: $value")
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
-                        Log.w(TAG, "Failed to read value.", error.toException())
-                    }
-                })
+                readClientsData(callBack)
             }
         }
+    }
+
+    private fun readOwnersData(callBack: OnDataCallBack) {
+        ownerRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                Log.d(TAG, "readFromDatabase: onDataChange starts")
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    val owner = snapshot.getValue(Owner::class.java)
+
+                    if (owner != null)
+                        owners.add(owner)
+                    Log.d(TAG, "readFromDatabase: onDataChange: owner's name is ${owner?.name}")
+                }
+
+                callBack.onOwnerDataCallBack(owners)
+                Log.d(TAG, "readFromDatabase: onDataChange ends")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })
+    }
+
+    private fun readClientsData(callBack: OnDataCallBack) {
+        clientRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value =
+                    dataSnapshot.getValue(String::class.java)
+                Log.d(TAG, "Value is: $value")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })
     }
 }

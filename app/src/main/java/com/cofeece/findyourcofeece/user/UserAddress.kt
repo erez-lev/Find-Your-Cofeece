@@ -39,4 +39,15 @@ class UserAddress(
         setCity(iCity)
         setCountry(iCountry)
     }
+
+    override fun toString(): String {
+        return "$street $city, $country"
+    }
+
+    override fun equals(address: Any?): Boolean {
+        val addressToCompare = address as UserAddress
+        return this.country == addressToCompare.country &&
+               this.city == addressToCompare.city &&
+               this.street == addressToCompare.street
+    }
 }

@@ -37,16 +37,15 @@ class RegisterRestaurantDetails : AppCompatActivity() {
         continueToBankBtn.setOnClickListener {
             if (restaurantDetailsEntered()) {
                 // Check if all fields was filled by user.
-                val restaurant = Restaurant(
-                    restaurantName.text.toString(),
-                    UserAddress(
-                        ownerStreet.text.toString(),
-                        ownerCity.text.toString(),
-                        ownerCountry.text.toString()
-                    )
+                val address = UserAddress(
+                    ownerStreet.text.toString(),
+                    ownerCity.text.toString(),
+                    ownerCountry.text.toString()
                 )
-                val intent = Intent(this, RegisterBankDetails::class.java)
 
+                val restaurant = Restaurant(restaurantName.text.toString(), address)
+
+                val intent = Intent(this, RegisterBankDetails::class.java)
                 intent.putExtra(AccountDetails.NAME.toString(), name)
                 intent.putExtra(AccountDetails.USERNAME.toString(), username)
                 intent.putExtra(AccountDetails.EMAIL.toString(), email)
@@ -58,7 +57,6 @@ class RegisterRestaurantDetails : AppCompatActivity() {
                 Log.d(TAG, "onCreate: user clicked continue before filled all details required")
                 // Disable error attribute of the inputLayout widget when the editText is not empty anymore.
                 disableError()
-
             }
         }
     }

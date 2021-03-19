@@ -49,4 +49,10 @@ class Owner(
     fun setBank(bank: Bank) {
         this.bank = bank
     }
+
+    override fun equals(owner: Any?): Boolean {
+        val ownerToCompare = owner as Owner
+        return this.id == ownerToCompare.id &&
+               this.restaurant == ownerToCompare.restaurant
+    }
 }

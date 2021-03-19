@@ -24,4 +24,10 @@ class Restaurant(private var name: String, private var address: UserAddress) : P
     fun setAddress(address: UserAddress) {
         this.address = address
     }
+
+    override fun equals(restaurant: Any?): Boolean {
+        val restaurantToCompare = restaurant as Restaurant
+        return this.name == restaurantToCompare.name &&
+               this.address == restaurantToCompare.address
+    }
 }

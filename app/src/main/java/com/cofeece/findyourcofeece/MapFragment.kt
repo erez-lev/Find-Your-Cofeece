@@ -1,63 +1,57 @@
 package com.cofeece.findyourcofeece
 
 import android.app.Activity
-
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-
 import android.graphics.Bitmap
 import android.graphics.Canvas
-
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
-
+import android.os.AsyncTask
 import android.os.Bundle
-
 import android.util.Log
-
-import androidx.fragment.app.Fragment
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-
 import androidx.fragment.app.activityViewModels
 import com.cofeece.findyourcofeece.firebase.DatabaseManager
 import com.cofeece.findyourcofeece.firebase.OWNERS
+import com.cofeece.findyourcofeece.map.DirectionsJSONParser
 import com.cofeece.findyourcofeece.owner.Owner
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
-import kotlinx.coroutines.*
 
+import org.json.JSONObject
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
-import java.util.concurrent.CountDownLatch
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
+
 
 private const val TAG = "MapFragment"
 
@@ -93,7 +87,8 @@ class MapFragment :
     private var mActivity: FragmentActivity? = null
     private lateinit var mMarker: BitmapDescriptor
     private var mIsOnMapReadyCalled: Boolean = false
-    private lateinit var mOwners: ArrayList<Owner>
+    private lateinit var mCurrentLatLng: LatLng
+    private lateinit var mDestinationLatLng: LatLng
 
 
     /** Activity Methods: */
@@ -105,10 +100,12 @@ class MapFragment :
         mContext = this.context
         mActivity = this.activity
         try {
-            mFusedLocationClient = FusedLocationProviderClient(mContext!!)
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext!!)
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+        mViewModel.loadOwnersTest()
     }
 
     override fun onCreateView(
@@ -138,10 +135,13 @@ class MapFragment :
         Log.d(TAG, "onMapReady: called")
         mMap = googleMap ?: return
 
-        if (isPermissionGiven()) {
-            googleMap.isMyLocationEnabled = true
-            googleMap.uiSettings.isMyLocationButtonEnabled = true
-            googleMap.uiSettings.isZoomControlsEnabled = true
+        if (ActivityCompat.checkSelfPermission(
+                mContext!!,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED) {
+            mMap!!.isMyLocationEnabled = true
+            googleMap.uiSettings.isMyLocationButtonEnabled = false
+            googleMap.uiSettings.isZoomControlsEnabled = false
             getCurrentLocation()
         } else {
             givePermission()
@@ -153,10 +153,15 @@ class MapFragment :
 
     override fun onMapFinished() {
         Log.d(TAG, "onMapFinished: called")
-        setRestaurantsOnMap()
+//        setRestaurantsOnMap()
+        setRestaurantsOnMapVM()
         mMap.setOnMarkerClickListener {
+            mDestinationLatLng = it.position
             reserveButton.visibility = View.VISIBLE
             reserveButton.isEnabled = true
+            reserveButton.setOnClickListener {
+                getDirectionsByPolyline()
+            }
             false
         }
         mMap.setOnMapClickListener {
@@ -165,46 +170,56 @@ class MapFragment :
         }
     }
 
+    private fun getDirectionsByPolyline() {
+            Log.d(TAG, "getDirectionsByPolyline: called")
+            // Checks, whether start and end locations are captured
+            // Getting URL to the Google Directions API
+            // Checks, whether start and end locations are captured
+            // Getting URL to the Google Directions API
+            val url = getDirectionsUrl(mCurrentLatLng, mDestinationLatLng)
+            Log.d("url", url + "")
+            val downloadTask = DownloadTask()
+            // Start downloading json data from Google Directions API
+            // Start downloading json data from Google Directions API
+            downloadTask.execute(url)
+    }
+
     override fun onStart() {
         Log.d(TAG, "onStart: called")
         super.onStart()
     }
 
+    override fun onStop() {
+        Log.d(TAG, "onStop: called")
+        super.onStop()
+        mViewModel.clearOwnerList()
+    }
+
     /** Class Methods: */
-    private fun setRestaurantsOnMap() {
-        Log.d(TAG, "setRestaurantsOnMap: called")
+    private fun setRestaurantsOnMapVM() {
+        Log.d(TAG, "setRestaurantsOnMapVM: called")
         mMarker = createCustomMarker()
+        mViewModel.ownersData.observe(this, { owners ->
+            Log.d(TAG, "setRestaurantsOnMapVM: in mViewModel.loadOwners owners are $owners")
+            owners.forEach { owner ->
+                val ownerFullAddress = owner.getRestaurant().getAddress().toString()
+                val latLng: LatLng? = getLocationFromAddress(mContext, ownerFullAddress)
 
-        mDB.readFromDatabase(OWNERS, object : DatabaseManager.OnDataCallBack {
-            override fun onOwnerDataCallBack(owners: ArrayList<Owner>) {
-                Log.d(TAG, "onDataCallBack: called")
-                if (mOwners.isNotEmpty()) {
-                    for (owner in mOwners) {
-                        val ownerAddress = owner.getRestaurant().getAddress()
-                        Log.d(TAG, "setRestaurantsOnMap: owner's address is: ${ownerAddress.getAddress()}"
-                        )
-                        val latlng =
-                            getLocationFromAddress(mContext, ownerAddress.getAddress())
-                        Log.d(TAG, "setRestaurantsOnMap: latitude is - ${latlng?.latitude}," +
-                                " longitude is - ${latlng?.longitude} "
-                        )
-                        if (latlng != null) {
-                            mMap.addMarker(
-                                MarkerOptions()
-                                    .position(latlng)
-                                    .title(owner.getRestaurant().getName())
-                                    .snippet(owner.getRestaurant().getAddress().getAddress())
-                                    .icon(mMarker)
-                            )
-
-                        } else {
-                            Log.d(TAG, "setRestaurantsOnMap: latlng is null")
-                        }
-                    }
+                if (latLng != null) {
+                    mMap.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title(owner.getRestaurant().getName())
+                            .snippet(owner.getRestaurant().getAddress().toString())
+                            .icon(mMarker)
+                    )
+                } else {
+                    Log.d(TAG, "setRestaurantsOnMapVM: Error! latlng of the current address is wrong")
                 }
             }
         })
-        // Set markers on the map. The owner's restaurants.
+
+        Log.d(TAG, "setRestaurantsOnMapVM: ends")
     }
 
 //    private fun setRestaurantsOnMap() {
@@ -212,8 +227,8 @@ class MapFragment :
 //        mMarker = createCustomMarker()
 //
 //        // Set markers on the map. The owner's restaurants.
-//        mViewModel.loadOwners(object : MapsViewModel.OnDataCallback {
-//            override fun onDataCallBack(owners: ArrayList<Owner>) {
+//        mDB.readFromDatabase(OWNERS, object : DatabaseManager.OnDataCallBack {
+//            override fun onOwnerDataCallBack(owners: ArrayList<Owner>) {
 //                Log.d(TAG, "onDataCallBack: called")
 //                if (owners.isNotEmpty()) {
 //                    for (owner in owners) {
@@ -369,46 +384,53 @@ class MapFragment :
 
     private fun getLastLocation() {
         Log.d(TAG, "getLastLocation: called")
-        mFusedLocationClient.lastLocation
-            .addOnCompleteListener(mActivity as Activity) { task ->
-                if (task.isSuccessful && task.result != null) {
-                    val mLastLocation = task.result
+        if (ActivityCompat.checkSelfPermission(
+                mContext!!,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationClient.lastLocation
+                .addOnCompleteListener(mActivity as Activity) { task ->
+                    if (task.isSuccessful && task.result != null) {
+                        val mLastLocation = task.result
 
-                    var address = "No known address"
+                        var address = "No known address"
 
-                    val gcd = Geocoder(mContext, Locale.getDefault())
-                    val addresses: List<Address>
-                    try {
-                        addresses = gcd.getFromLocation(
-                            mLastLocation!!.latitude,
-                            mLastLocation.longitude,
-                            1
-                        )
-                        if (addresses.isNotEmpty()) {
-                            address = addresses[0].getAddressLine(0)
+                        val gcd = Geocoder(mContext, Locale.getDefault())
+                        val addresses: List<Address>
+                        try {
+                            addresses = gcd.getFromLocation(
+                                mLastLocation!!.latitude,
+                                mLastLocation.longitude,
+                                1
+                            )
+                            if (addresses.isNotEmpty()) {
+                                address = addresses[0].getAddressLine(0)
+                            }
+                        } catch (e: IOException) {
+                            e.printStackTrace()
                         }
-                    } catch (e: IOException) {
-                        e.printStackTrace()
+
+                        mCurrentLatLng = LatLng(mLastLocation!!.latitude, mLastLocation!!.longitude)
+
+                        mMap.addMarker(
+                            MarkerOptions()
+                                .position(LatLng(mLastLocation!!.latitude, mLastLocation.longitude))
+                                .title("Current Location")
+                                .snippet(address)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                        )
+
+                        val cameraPosition = CameraPosition.Builder()
+                            .target(LatLng(mLastLocation.latitude, mLastLocation.longitude))
+                            .zoom(15f)
+                            .build()
+                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                    } else {
+                        Toast.makeText(mContext, "No current location found", Toast.LENGTH_LONG)
+                            .show()
                     }
-
-
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(LatLng(mLastLocation!!.latitude, mLastLocation.longitude))
-                            .title("Current Location")
-                            .snippet(address)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                    )
-
-                    val cameraPosition = CameraPosition.Builder()
-                        .target(LatLng(mLastLocation.latitude, mLastLocation.longitude))
-                        .zoom(17f)
-                        .build()
-                    mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-                } else {
-                    Toast.makeText(mContext, "No current location found", Toast.LENGTH_LONG).show()
                 }
-            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -422,6 +444,136 @@ class MapFragment :
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    private inner class DownloadTask :
+        AsyncTask<String?, Void?, String>() {
+        override fun doInBackground(vararg url: String?): String {
+            var data = ""
+            if (url[0] == null) {
+                Log.d(TAG, "Got empty url")
+            }
+
+            try {
+                data = downloadUrl(url[0]!!) ?: ""
+            } catch (e: java.lang.Exception) {
+                Log.d("Background Task", e.toString())
+            }
+
+            Log.d(TAG, "DownloadTask: doInBackground: data is $data")
+            return data
+        }
+
+        override fun onPostExecute(result: String) {
+            super.onPostExecute(result)
+            Log.d(TAG, "DownloadTask: onPostExecute: result is $result")
+            val parserTask = ParserTask()
+            parserTask.execute(result)
+        }
+    }
+
+
+    /**
+     * A class to parse the Google Places in JSON format
+     */
+    private inner class ParserTask :
+        AsyncTask<String?, Int?, List<List<HashMap<String, String>>>?>() {
+
+        val map = MapFragment::mMap
+
+        // Parsing the data in non-ui thread
+        override fun doInBackground(vararg jsonData: String?): List<List<HashMap<String, String>>>? {
+            val jObject: JSONObject
+            var routes: List<List<HashMap<String, String>>>? = null
+            try {
+                Log.d(TAG, "ParserTask: onPostExecute: jsonData is ${jsonData[0]}")
+                jObject = JSONObject(jsonData[0]!!)
+                val parser = DirectionsJSONParser()
+                routes = parser.parse(jObject)
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+            return routes
+        }
+
+        override fun onPostExecute(result: List<List<HashMap<String, String>>>?) {
+//            progressDialog.dismiss()
+            Log.d(TAG, "ParserTask: onPostExecute: result is $result")
+            var points: ArrayList<LatLng> = ArrayList()
+            var lineOptions: PolylineOptions
+            for (i in result!!.indices) {
+                val path = result[i]
+                for (j in path.indices) {
+                    val point = path[j]
+                    val lat = point["lat"]!!.toDouble()
+                    val lng = point["lng"]!!.toDouble()
+                    val position = LatLng(lat, lng)
+                    points.add(position)
+                }
+            }
+
+            lineOptions = PolylineOptions()
+                .addAll(points)
+                .width(12f)
+                .color(Color.BLACK)
+                .geodesic(true)
+
+            // Drawing polyline in the Google Map for the i-th route
+            mMap.addPolyline(lineOptions)
+        }
+    }
+
+    private fun getDirectionsUrl(origin: LatLng, dest: LatLng): String? {
+
+        // Origin of route
+        val str_origin = "origin=" + origin.latitude + "," + origin.longitude
+
+        // Destination of route
+        val str_dest = "destination=" + dest.latitude + "," + dest.longitude
+
+        // Sensor enabled
+        val sensor = "sensor=false"
+        val mode = "mode=driving"
+        val apiKey = "key=AIzaSyAlHbqBbk--UDj6pig_nDyL6Z_238WoOLI"
+        // Building the parameters to the web service
+        val parameters = "$str_origin&$str_dest&$sensor&$mode&$apiKey"
+
+        // Output format
+        val output = "json"
+
+        // Building the url to the web service
+        return "https://maps.googleapis.com/maps/api/directions/$output?$parameters"
+    }
+
+    /**
+     * A method to download json data from url
+     */
+    @Throws(IOException::class)
+    private fun downloadUrl(strUrl: String): String? {
+        var data = ""
+        var iStream: InputStream? = null
+        var urlConnection: HttpURLConnection? = null
+        try {
+            val url = URL(strUrl)
+            urlConnection = url.openConnection() as HttpURLConnection
+            urlConnection.connect()
+            iStream = urlConnection!!.inputStream
+            val br = BufferedReader(InputStreamReader(iStream))
+            val sb = StringBuffer()
+            var line: String? = ""
+            while (br.readLine().also { line = it } != null) {
+                sb.append(line)
+            }
+            data = sb.toString()
+            br.close()
+            Log.d("data", data)
+        } catch (e: java.lang.Exception) {
+            Log.d("Exception", e.toString())
+        } finally {
+            iStream!!.close()
+            urlConnection!!.disconnect()
+        }
+        return data
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -432,5 +584,33 @@ class MapFragment :
             MapFragment().apply {
                 return MapFragment()
             }
+
+        @Throws(IOException::class)
+        fun downloadUrl(strUrl: String): String? {
+            var data = ""
+            var iStream: InputStream? = null
+            var urlConnection: HttpURLConnection? = null
+            try {
+                val url = URL(strUrl)
+                urlConnection = url.openConnection() as HttpURLConnection
+                urlConnection.connect()
+                iStream = urlConnection!!.inputStream
+                val br = BufferedReader(InputStreamReader(iStream))
+                val sb = StringBuffer()
+                var line: String? = ""
+                while (br.readLine().also { line = it } != null) {
+                    sb.append(line)
+                }
+                data = sb.toString()
+                br.close()
+                Log.d("data", data)
+            } catch (e: java.lang.Exception) {
+                Log.d("Exception", e.toString())
+            } finally {
+                iStream!!.close()
+                urlConnection!!.disconnect()
+            }
+            return data
+        }
     }
 }
