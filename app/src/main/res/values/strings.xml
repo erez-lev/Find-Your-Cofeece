@@ -54,4 +54,5 @@
 
 
     <string name="google_maps_key">AIzaSyAlHbqBbk--UDj6pig_nDyL6Z_238WoOLI</string>
+    <string name="please_wait">Please wait ...</string>
 </resources>

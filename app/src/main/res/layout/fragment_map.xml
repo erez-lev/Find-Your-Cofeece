@@ -21,12 +21,11 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="24px"
         android:enabled="false"
-        android:text="@string/reserve"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:visibility="invisible"
         app:backgroundTint="#F9AA33"
-        app:icon="@android:drawable/ic_input_add"
+        app:icon="@drawable/ic_baseline_directions_24"
         app:iconPadding="8dp"
         app:iconTint="@color/colorPrimary" />
 

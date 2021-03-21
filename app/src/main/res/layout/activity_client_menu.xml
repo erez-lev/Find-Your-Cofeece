@@ -9,6 +9,11 @@
     android:weightSum="8"
     tools:context=".ClientMenuActivity">
 
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progressbar"/>
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.cofeece.findyourcofeece.TimerFragment"

@@ -10,6 +10,8 @@ import com.cofeece.findyourcofeece.owner.OwnerChildren
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.concurrent.thread
 
 
@@ -86,8 +88,9 @@ class DatabaseManager() {
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val owner = snapshot.getValue(Owner::class.java)
 
-                    if (owner != null)
+                    if (owner != null) {
                         owners.add(owner)
+                    }
                     Log.d(TAG, "readFromDatabase: onDataChange: owner's name is ${owner?.name}")
                 }
 

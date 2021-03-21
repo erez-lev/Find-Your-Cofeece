@@ -12,6 +12,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 import java.util.*
 import java.util.logging.Handler
@@ -20,16 +23,13 @@ import kotlin.concurrent.thread
 
 /** Constants: */
 private val TAG = "MapsViewModel"
-val EMPTY_OWNER_LIST: MutableList<Owner> = Collections.emptyList()
 
 class MapsViewModel : ViewModel() {
     /** Properties: */
     private val db = DatabaseManager()
-//    private var owners = EMPTY_OWNER_LIST
     private var owners = MutableLiveData<ArrayList<Owner>>()
-    var ownersData: LiveData<ArrayList<Owner>>
+    val ownersData: LiveData<ArrayList<Owner>>
         get() = owners
-        set(value) {ownersData = value}
 
     /** Methods: */
     init {
@@ -37,6 +37,7 @@ class MapsViewModel : ViewModel() {
     }
 
     fun loadOwnersTest() {
+        Log.d(TAG, "loadOwnersTest: starts")
         db.readFromDatabase(OWNERS, object: DatabaseManager.OnDataCallBack {
             override fun onOwnerDataCallBack(owners: ArrayList<Owner>) {
                 this@MapsViewModel.owners.postValue(owners)

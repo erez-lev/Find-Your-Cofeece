@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
@@ -19,13 +17,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
-import com.cofeece.findyourcofeece.firebase.DatabaseManager
-import com.cofeece.findyourcofeece.firebase.OWNERS
+
 import com.cofeece.findyourcofeece.map.DirectionsJSONParser
-import com.cofeece.findyourcofeece.owner.Owner
+import com.cofeece.findyourcofeece.map.MapsUtils
+
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -33,13 +32,19 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+
 import com.google.android.gms.maps.model.*
+
 import com.karumi.dexter.Dexter
+
 import com.karumi.dexter.PermissionToken
+
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import kotlinx.android.synthetic.main.activity_client_menu.*
+
 import kotlinx.android.synthetic.main.fragment_map.*
 
 import org.json.JSONObject
@@ -58,7 +63,7 @@ private const val TAG = "MapFragment"
 /** Constants: */
 const val REQUEST_CHECK_SETTINGS = 43
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+// The fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_MAP = "Map"
 private const val ARG_LOCATION = "Location"
 
@@ -72,7 +77,7 @@ private interface OnMapFinished {
     fun onMapFinished()
 }
 
-class MapFragment :
+class MapFragment(private val listener: OnMapFragmentViewCreated) :
     Fragment(),
     OnMapReadyCallback,
     PermissionListener,
@@ -81,15 +86,14 @@ class MapFragment :
     /** Properties: */
     private lateinit var mMap: GoogleMap
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
-    private var mDB = DatabaseManager()
     private val mViewModel: MapsViewModel by activityViewModels()
     private var mContext: Context? = null
     private var mActivity: FragmentActivity? = null
     private lateinit var mMarker: BitmapDescriptor
-    private var mIsOnMapReadyCalled: Boolean = false
     private lateinit var mCurrentLatLng: LatLng
     private lateinit var mDestinationLatLng: LatLng
-
+    private lateinit var mPolyline: Polyline
+    private val mMapUtils = MapsUtils()
 
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -139,9 +143,9 @@ class MapFragment :
                 mContext!!,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED) {
-            mMap!!.isMyLocationEnabled = true
-            googleMap.uiSettings.isMyLocationButtonEnabled = false
-            googleMap.uiSettings.isZoomControlsEnabled = false
+            mMap.isMyLocationEnabled = true
+            mMap.uiSettings.isZoomControlsEnabled = false
+            mMap.uiSettings.isMyLocationButtonEnabled = false
             getCurrentLocation()
         } else {
             givePermission()
@@ -152,6 +156,7 @@ class MapFragment :
     }
 
     override fun onMapFinished() {
+        var requestDrections = false
         Log.d(TAG, "onMapFinished: called")
 //        setRestaurantsOnMap()
         setRestaurantsOnMapVM()
@@ -160,10 +165,21 @@ class MapFragment :
             reserveButton.visibility = View.VISIBLE
             reserveButton.isEnabled = true
             reserveButton.setOnClickListener {
-                getDirectionsByPolyline()
+                if (!requestDrections) {
+                    getDirectionsByPolyline()
+                    val drawble = ContextCompat.getDrawable(mContext!!, R.drawable.ic_baseline_cancel_24)
+                    reserveButton.icon = drawble
+                    requestDrections = true
+                } else {
+                    val drawble = ContextCompat.getDrawable(mContext!!, R.drawable.ic_baseline_directions_24)
+                    reserveButton.icon = drawble
+                    requestDrections = false
+                    mPolyline.color = Color.TRANSPARENT
+                }
             }
             false
         }
+
         mMap.setOnMapClickListener {
             reserveButton.visibility = View.GONE
             reserveButton.isEnabled = false
@@ -184,11 +200,6 @@ class MapFragment :
             downloadTask.execute(url)
     }
 
-    override fun onStart() {
-        Log.d(TAG, "onStart: called")
-        super.onStart()
-    }
-
     override fun onStop() {
         Log.d(TAG, "onStop: called")
         super.onStop()
@@ -198,12 +209,12 @@ class MapFragment :
     /** Class Methods: */
     private fun setRestaurantsOnMapVM() {
         Log.d(TAG, "setRestaurantsOnMapVM: called")
-        mMarker = createCustomMarker()
+        mMarker = mMapUtils.createCustomMarker(mContext)
         mViewModel.ownersData.observe(this, { owners ->
             Log.d(TAG, "setRestaurantsOnMapVM: in mViewModel.loadOwners owners are $owners")
             owners.forEach { owner ->
                 val ownerFullAddress = owner.getRestaurant().getAddress().toString()
-                val latLng: LatLng? = getLocationFromAddress(mContext, ownerFullAddress)
+                val latLng: LatLng? = mMapUtils.getLocationFromAddress(mContext, ownerFullAddress)
 
                 if (latLng != null) {
                     mMap.addMarker(
@@ -217,6 +228,8 @@ class MapFragment :
                     Log.d(TAG, "setRestaurantsOnMapVM: Error! latlng of the current address is wrong")
                 }
             }
+
+            this.listener.onMapFragmentViewCreated()
         })
 
         Log.d(TAG, "setRestaurantsOnMapVM: ends")
@@ -271,45 +284,6 @@ class MapFragment :
 //        })
 //    }
 
-    private fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
-        Log.d(TAG, "getLocationFromAddress: called")
-        val coder = Geocoder(context)
-        val address: List<android.location.Address>?
-        var p1: LatLng? = null
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5)
-            if (address == null) {
-                return null
-            }
-            val location = address[0]
-            p1 = LatLng(location.latitude, location.longitude)
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-        }
-        return p1
-    }
-
-
-    private fun createCustomMarker(): BitmapDescriptor {
-        val drawble = ContextCompat.getDrawable(mContext!!, R.drawable.ic_coffee_yellow_24dp)
-        if (drawble != null) {
-            drawble?.setBounds(0, 0, drawble.intrinsicWidth, drawble.intrinsicHeight)
-            val bitmap = Bitmap.createBitmap(
-                drawble.intrinsicWidth,
-                drawble.intrinsicHeight,
-                Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(bitmap)
-            drawble.draw(canvas)
-
-            return BitmapDescriptorFactory.fromBitmap(bitmap)
-        } else {
-            throw NullPointerException("There was no bitmap to create.")
-        }
-    }
-
-
     private fun isPermissionGiven(): Boolean {
         return ActivityCompat.checkSelfPermission(
             mContext!!,
@@ -363,14 +337,14 @@ class MapFragment :
         result.addOnCompleteListener { task ->
             try {
                 val response = task.getResult(ApiException::class.java)
-                if (response!!.locationSettingsStates.isLocationPresent) {
+                if (response!!.locationSettingsStates!!.isLocationPresent) {
                     getLastLocation()
                 }
             } catch (exception: ApiException) {
                 when (exception.statusCode) {
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
                         val resolvable = exception as ResolvableApiException
-                        resolvable.startResolutionForResult(mActivity, REQUEST_CHECK_SETTINGS)
+                        resolvable.startResolutionForResult(mActivity!!, REQUEST_CHECK_SETTINGS)
                     } catch (e: IntentSender.SendIntentException) {
                     } catch (e: ClassCastException) {
                     }
@@ -412,13 +386,13 @@ class MapFragment :
 
                         mCurrentLatLng = LatLng(mLastLocation!!.latitude, mLastLocation!!.longitude)
 
-                        mMap.addMarker(
-                            MarkerOptions()
-                                .position(LatLng(mLastLocation!!.latitude, mLastLocation.longitude))
-                                .title("Current Location")
-                                .snippet(address)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                        )
+//                        mMap.addMarker(
+//                            MarkerOptions()
+//                                .position(LatLng(mLastLocation!!.latitude, mLastLocation.longitude))
+//                                .title("Current Location")
+//                                .snippet(address)
+//                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+//                        )
 
                         val cameraPosition = CameraPosition.Builder()
                             .target(LatLng(mLastLocation.latitude, mLastLocation.longitude))
@@ -444,6 +418,8 @@ class MapFragment :
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    /** AsyncTask classes and methods */
+    /** ----------------------------- */
     private inner class DownloadTask :
         AsyncTask<String?, Void?, String>() {
         override fun doInBackground(vararg url: String?): String {
@@ -477,8 +453,6 @@ class MapFragment :
     private inner class ParserTask :
         AsyncTask<String?, Int?, List<List<HashMap<String, String>>>?>() {
 
-        val map = MapFragment::mMap
-
         // Parsing the data in non-ui thread
         override fun doInBackground(vararg jsonData: String?): List<List<HashMap<String, String>>>? {
             val jObject: JSONObject
@@ -497,8 +471,8 @@ class MapFragment :
         override fun onPostExecute(result: List<List<HashMap<String, String>>>?) {
 //            progressDialog.dismiss()
             Log.d(TAG, "ParserTask: onPostExecute: result is $result")
-            var points: ArrayList<LatLng> = ArrayList()
-            var lineOptions: PolylineOptions
+            val points: ArrayList<LatLng> = ArrayList()
+            val lineOptions: PolylineOptions
             for (i in result!!.indices) {
                 val path = result[i]
                 for (j in path.indices) {
@@ -517,24 +491,24 @@ class MapFragment :
                 .geodesic(true)
 
             // Drawing polyline in the Google Map for the i-th route
-            mMap.addPolyline(lineOptions)
+            mPolyline = mMap.addPolyline(lineOptions)
         }
     }
 
     private fun getDirectionsUrl(origin: LatLng, dest: LatLng): String? {
 
         // Origin of route
-        val str_origin = "origin=" + origin.latitude + "," + origin.longitude
+        val strOrigin = "origin=" + origin.latitude + "," + origin.longitude
 
         // Destination of route
-        val str_dest = "destination=" + dest.latitude + "," + dest.longitude
+        val strDest = "destination=" + dest.latitude + "," + dest.longitude
 
         // Sensor enabled
         val sensor = "sensor=false"
         val mode = "mode=driving"
         val apiKey = "key=AIzaSyAlHbqBbk--UDj6pig_nDyL6Z_238WoOLI"
         // Building the parameters to the web service
-        val parameters = "$str_origin&$str_dest&$sensor&$mode&$apiKey"
+        val parameters = "$strOrigin&$strDest&$sensor&$mode&$apiKey"
 
         // Output format
         val output = "json"
@@ -555,7 +529,7 @@ class MapFragment :
             val url = URL(strUrl)
             urlConnection = url.openConnection() as HttpURLConnection
             urlConnection.connect()
-            iStream = urlConnection!!.inputStream
+            iStream = urlConnection.inputStream
             val br = BufferedReader(InputStreamReader(iStream))
             val sb = StringBuffer()
             var line: String? = ""
@@ -580,37 +554,9 @@ class MapFragment :
          * this fragment using the provided parameters.
          */
         @JvmStatic
-        fun newInstance() =
-            MapFragment().apply {
-                return MapFragment()
+        fun newInstance(iActivity: ClientMenuActivity) =
+            MapFragment(iActivity).apply {
+                return MapFragment(iActivity)
             }
-
-        @Throws(IOException::class)
-        fun downloadUrl(strUrl: String): String? {
-            var data = ""
-            var iStream: InputStream? = null
-            var urlConnection: HttpURLConnection? = null
-            try {
-                val url = URL(strUrl)
-                urlConnection = url.openConnection() as HttpURLConnection
-                urlConnection.connect()
-                iStream = urlConnection!!.inputStream
-                val br = BufferedReader(InputStreamReader(iStream))
-                val sb = StringBuffer()
-                var line: String? = ""
-                while (br.readLine().also { line = it } != null) {
-                    sb.append(line)
-                }
-                data = sb.toString()
-                br.close()
-                Log.d("data", data)
-            } catch (e: java.lang.Exception) {
-                Log.d("Exception", e.toString())
-            } finally {
-                iStream!!.close()
-                urlConnection!!.disconnect()
-            }
-            return data
-        }
     }
 }

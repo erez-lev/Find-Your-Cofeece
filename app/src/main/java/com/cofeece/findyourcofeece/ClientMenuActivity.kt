@@ -8,17 +8,21 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_client_menu.*
 import kotlinx.android.synthetic.main.fragment_timer.*
 
 private const val TAG = "ClientMenuActivity"
 
 class ClientMenuActivity :
     AppCompatActivity(),
-    BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView.OnNavigationItemSelectedListener,
+    OnMapFragmentViewCreated {
+
     /** Activity Attributes: */
     private var mTimerFragment: Fragment? = TimerFragment.newInstance()
-    private var mMapFragment: Fragment? = MapFragment.newInstance()
+    private var mMapFragment: Fragment? = MapFragment.newInstance(this)
     private var mCurrentFragment = mTimerFragment
+    private var mIsSecondOrMore = false
 
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,20 +39,28 @@ class ClientMenuActivity :
         Log.d(TAG, "onNavigationItemSelected: called")
         when (item.itemId) {
             R.id.timerMenuItem -> {
+//                llProgressBar.visibility = View.VISIBLE
                 Log.d(TAG, "onNavigationItemSelected: timerMenuItem button pressed")
                 if (mCurrentFragment != mTimerFragment) {
                     loadNewFragment(mTimerFragment, mMapFragment)
                     mCurrentFragment = mTimerFragment
                 }
+
                 return true
             }
 
             R.id.mapMenuItem -> {
+                if (!mIsSecondOrMore){
+                    llProgressBar.visibility = View.VISIBLE
+                    mIsSecondOrMore = true
+                }
+
                 Log.d(TAG, "onNavigationItemSelected: mapMenuItem button pressed")
                 if (mCurrentFragment != mMapFragment) {
                     loadNewFragment(mMapFragment, mTimerFragment)
                     mCurrentFragment = mMapFragment
                 }
+
                 return true
             }
 
@@ -57,7 +69,7 @@ class ClientMenuActivity :
     }
 
     /** Class Methods: */
-    private fun loadNewFragment(iNewFragment: Fragment?, iOldFragment: Fragment?) {
+    private fun loadNewFragment(iNewFragment: Fragment?, iOldFragment: Fragment?): Boolean {
         Log.d(TAG, "loadNewFragment called")
         if (iNewFragment != null) {
             iOldFragment?.view?.visibility = View.GONE
@@ -70,6 +82,8 @@ class ClientMenuActivity :
             Log.d(TAG, "loadNewFragment: failed")
             iOldFragment?.view?.visibility = View.VISIBLE
         }
+
+        return true
     }
 
     fun switchFragment(iNextFragment: Fragment?) {
@@ -87,9 +101,17 @@ class ClientMenuActivity :
 
             iNextFragment.view?.visibility = View.VISIBLE
             iNextFragment.view?.isVisible = true
-            Log.d(TAG, "getDetailsAndContinueToRate: is fragment visible? ${iNextFragment.isVisible}")
+            Log.d(TAG, "switchFragment: is fragment visible? ${iNextFragment.isVisible}")
         } else {
             Log.d(TAG, "This fragment is null!")
         }
+    }
+
+    override fun onMapFragmentViewCreated() {
+        llProgressBar.visibility = View.GONE
+        llProgressBar.isVisible = false
+        mCurrentFragment?.view?.visibility = View.VISIBLE
+        Log.d(TAG, "onMapFragmentViewCreated: current fragment is: ${mCurrentFragment}")
+        Log.d(TAG, "onMapFragmentViewCreated: is fragment visible? ${mCurrentFragment?.view?.isVisible}")
     }
 }
