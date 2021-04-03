@@ -42,6 +42,7 @@ class MapsViewModel() : ViewModel() {
         loadOwners()
     }
 
+    // Leave this function here just in case things down't work correctly.
     fun loadOwnersTest() {
         Log.d(TAG, "loadOwnersTest: starts")
         db.readFromDatabase(OWNERS, object : DatabaseManager.OnDataCallBack {

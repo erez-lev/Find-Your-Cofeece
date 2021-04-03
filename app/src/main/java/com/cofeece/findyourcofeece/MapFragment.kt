@@ -107,8 +107,6 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
             e.printStackTrace()
         }
 
-//        mViewModel.loadOwnersTest()
-        // That's a test below!
         if (mViewModel.mapFragmentListener != null) {
             setRestaurantsOnMapVM()
         }
@@ -244,55 +242,6 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
         // Start downloading json data from Google Directions API
         downloadTask.execute(url)
     }
-
-//    private fun setRestaurantsOnMap() {
-//        Log.d(TAG, "setRestaurantsOnMap: called")
-//        mMarker = createCustomMarker()
-//
-//        // Set markers on the map. The owner's restaurants.
-//        mDB.readFromDatabase(OWNERS, object : DatabaseManager.OnDataCallBack {
-//            override fun onOwnerDataCallBack(owners: ArrayList<Owner>) {
-//                Log.d(TAG, "onDataCallBack: called")
-//                if (owners.isNotEmpty()) {
-//                    for (owner in owners) {
-//                        try {
-//                            val ownerAddress = owner.getRestaurant().getAddress()
-//                            Log.d(
-//                                TAG,
-//                                "setRestaurantsOnMap: owner's address is: ${ownerAddress.getAddress()}"
-//                            )
-//                            val latlng =
-//                                getLocationFromAddress(mContext, ownerAddress.getAddress())
-//                            Log.d(
-//                                TAG,
-//                                "setRestaurantsOnMap: latitude is - ${latlng?.latitude}," +
-//                                        " longitude is - ${latlng?.longitude} "
-//                            )
-//                            if (latlng != null) {
-//                                mMap.addMarker(
-//                                    MarkerOptions()
-//                                        .position(latlng)
-//                                        .title(owner.getRestaurant().getName())
-//                                        .snippet(
-//                                            owner.getRestaurant().getAddress().getAddress()
-//                                        )
-//                                        .icon(mMarker)
-////                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-//                                )
-//
-//                            } else {
-//                                Log.d(TAG, "setRestaurantsOnMap: latlng is null")
-//                            }
-//                        } catch (e: NullPointerException) {
-//                            e.printStackTrace()
-//                        } catch (e: IndexOutOfBoundsException) {
-//                            e.printStackTrace()
-//                        }
-//                    }
-//                }
-//            }
-//        })
-//    }
 
     private fun isPermissionGiven(): Boolean {
         return ActivityCompat.checkSelfPermission(
