@@ -1,4 +1,4 @@
-package com.cofeece.findyourcofeece
+package com.cofeece.findyourcofeece.view
 
 import android.content.Context
 import android.content.Intent
@@ -6,15 +6,15 @@ import android.location.Address
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import androidx.core.widget.addTextChangedListener
+import com.cofeece.findyourcofeece.R
 
-import com.cofeece.findyourcofeece.owner.AccountDetails
-import com.cofeece.findyourcofeece.owner.Restaurant
-import com.cofeece.findyourcofeece.owner.RestaurantDetails
+import com.cofeece.findyourcofeece.model.owner.AccountDetails
+import com.cofeece.findyourcofeece.model.owner.Restaurant
+import com.cofeece.findyourcofeece.model.owner.RestaurantDetails
 
-import com.cofeece.findyourcofeece.user.UserAddress
+import com.cofeece.findyourcofeece.model.user.UserAddress
 import com.google.android.gms.maps.model.LatLng
 
 import com.google.android.material.textfield.TextInputEditText
@@ -139,8 +139,8 @@ class RegisterRestaurantDetails : AppCompatActivity() {
     }
 
     fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
-        Log.d(com.cofeece.findyourcofeece.map.TAG, "getLocationFromAddress: called")
-        Log.d(com.cofeece.findyourcofeece.map.TAG, "getLocationFromAddress: inside thread starts")
+        Log.d(com.cofeece.findyourcofeece.utils.map.TAG, "getLocationFromAddress: called")
+        Log.d(com.cofeece.findyourcofeece.utils.map.TAG, "getLocationFromAddress: inside thread starts")
         val coder = Geocoder(context)
         val address: List<Address>?
         var p1: LatLng? = null

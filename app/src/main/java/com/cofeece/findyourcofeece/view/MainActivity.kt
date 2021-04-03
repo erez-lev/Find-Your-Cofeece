@@ -1,22 +1,12 @@
-package com.cofeece.findyourcofeece
+package com.cofeece.findyourcofeece.view
 
 
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 
 import androidx.appcompat.app.AppCompatActivity
-import com.cofeece.findyourcofeece.client.Client
-import com.cofeece.findyourcofeece.firebase.AuthenticationManager
-import com.cofeece.findyourcofeece.firebase.DatabaseManager
-import com.cofeece.findyourcofeece.owner.Owner
-import com.cofeece.findyourcofeece.user.User
-
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseUser
+import com.cofeece.findyourcofeece.R
 
 
 import kotlinx.android.synthetic.main.activity_main.*

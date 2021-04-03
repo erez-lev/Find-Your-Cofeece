@@ -1,8 +1,9 @@
-package com.cofeece.findyourcofeece
+package com.cofeece.findyourcofeece.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.cofeece.findyourcofeece.R
 import kotlinx.android.synthetic.main.activity_owner_sign_in.*
 
 class OwnerSignInActivity : AppCompatActivity() {

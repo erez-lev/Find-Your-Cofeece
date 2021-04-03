@@ -1,6 +1,6 @@
-package com.cofeece.findyourcofeece.owner
+package com.cofeece.findyourcofeece.model.owner
 
-import com.cofeece.findyourcofeece.user.User
+import com.cofeece.findyourcofeece.model.user.User
 
 /** Enums: */
 enum class OwnerChildren {

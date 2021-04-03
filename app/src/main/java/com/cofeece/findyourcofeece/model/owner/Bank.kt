@@ -1,4 +1,4 @@
-package com.cofeece.findyourcofeece.owner
+package com.cofeece.findyourcofeece.model.owner
 
 /** Enums: */
 enum class BankDetails {

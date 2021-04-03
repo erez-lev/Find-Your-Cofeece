@@ -1,7 +1,4 @@
-package com.cofeece.findyourcofeece.user
-
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+package com.cofeece.findyourcofeece.model.user
 
 private const val TAG = "User"
 

@@ -1,4 +1,4 @@
-package com.cofeece.findyourcofeece
+package com.cofeece.findyourcofeece.model
 
 
 interface OnMapFragmentViewCreated {

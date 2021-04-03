@@ -1,11 +1,10 @@
-package com.cofeece.findyourcofeece.map
+package com.cofeece.findyourcofeece.utils.map
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Address
 import android.location.Geocoder
-import android.os.Looper
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.cofeece.findyourcofeece.R

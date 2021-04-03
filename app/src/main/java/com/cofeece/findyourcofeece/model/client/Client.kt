@@ -1,6 +1,6 @@
-package com.cofeece.findyourcofeece.client
+package com.cofeece.findyourcofeece.model.client
 
-import com.cofeece.findyourcofeece.user.User
+import com.cofeece.findyourcofeece.model.user.User
 
 class Client(name: String, username: String, email: String, password: String) :
     User(name, username, email, password) {

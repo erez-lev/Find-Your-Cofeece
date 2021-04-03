@@ -2,20 +2,16 @@ package com.cofeece.findyourcofeece
 
 import android.os.Looper
 import android.util.Log
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.*
 import com.cofeece.findyourcofeece.firebase.DatabaseManager
 import com.cofeece.findyourcofeece.firebase.OWNERS
-import com.cofeece.findyourcofeece.owner.Owner
+import com.cofeece.findyourcofeece.model.owner.Owner
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 interface OnDataReady {
     fun onDataReady()

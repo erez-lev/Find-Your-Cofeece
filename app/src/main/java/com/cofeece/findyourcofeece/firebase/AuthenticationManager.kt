@@ -1,7 +1,7 @@
 package com.cofeece.findyourcofeece.firebase
 
 import android.util.Log
-import com.cofeece.findyourcofeece.user.User
+import com.cofeece.findyourcofeece.model.user.User
 import com.google.firebase.auth.FirebaseUser
 
 private const val TAG = "AuthenticationManager"

@@ -1,4 +1,4 @@
-package com.cofeece.findyourcofeece
+package com.cofeece.findyourcofeece.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.widget.addTextChangedListener
+import com.cofeece.findyourcofeece.R
 
 import com.cofeece.findyourcofeece.firebase.DatabaseManager
 import com.cofeece.findyourcofeece.firebase.OWNERS
 
-import com.cofeece.findyourcofeece.owner.*
+import com.cofeece.findyourcofeece.model.owner.*
 
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout

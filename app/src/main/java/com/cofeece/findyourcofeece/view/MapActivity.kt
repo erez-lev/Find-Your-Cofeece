@@ -1,9 +1,10 @@
-package com.cofeece.findyourcofeece
+package com.cofeece.findyourcofeece.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.cofeece.findyourcofeece.R
 import com.cofeece.findyourcofeece.firebase.AuthenticationManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser

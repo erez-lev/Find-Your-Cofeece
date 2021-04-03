@@ -1,4 +1,4 @@
-package com.cofeece.findyourcofeece
+package com.cofeece.findyourcofeece.view
 
 import android.app.Activity
 import android.content.Context
@@ -22,10 +22,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
+import com.cofeece.findyourcofeece.MapsViewModel
+import com.cofeece.findyourcofeece.OnDataReady
 
-import com.cofeece.findyourcofeece.map.DirectionsJSONParser
-import com.cofeece.findyourcofeece.map.MapsUtils
-import com.cofeece.findyourcofeece.owner.Owner
+import com.cofeece.findyourcofeece.utils.map.DirectionsJSONParser
+import com.cofeece.findyourcofeece.utils.map.MapsUtils
+import com.cofeece.findyourcofeece.model.OnMapFragmentViewCreated
+import com.cofeece.findyourcofeece.model.owner.Owner
 
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -34,6 +37,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.cofeece.findyourcofeece.R
 
 import com.google.android.gms.maps.model.*
 
@@ -45,7 +49,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
-import kotlinx.android.synthetic.main.activity_client_menu.*
 
 import kotlinx.android.synthetic.main.fragment_map.*
 
@@ -58,7 +61,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 private const val TAG = "MapFragment"
 

@@ -1,4 +1,4 @@
-package com.cofeece.findyourcofeece.user
+package com.cofeece.findyourcofeece.model.user
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

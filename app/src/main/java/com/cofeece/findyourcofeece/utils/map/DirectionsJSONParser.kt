@@ -1,4 +1,4 @@
-package com.cofeece.findyourcofeece.map
+package com.cofeece.findyourcofeece.utils.map
 
 import com.google.android.gms.maps.model.LatLng
 import org.json.JSONArray

@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ClientMenuActivity"></activity>
         <activity android:name=".MapActivity" />
-        <activity android:name=".OwnerSignInActivity" />
+        <activity android:name=".view.OwnerSignInActivity" />
         <!--
      The API key for Google Maps-based APIs is defined as a string resource.
      (See the file "res/values/google_maps_api.xml").
@@ -49,19 +49,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OwnerRegisterActivity"
+            android:name=".view.OwnerRegisterActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".OwnerHomeActivity"
+            android:name=".view.OwnerHomeActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".OwnerMenuActivity"
+            android:name=".view.OwnerMenuActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".RegisterBankDetails"
+            android:name=".view.RegisterBankDetails"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".RegisterRestaurantDetails"
+            android:name=".view.RegisterRestaurantDetails"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ClientHomeActivity"

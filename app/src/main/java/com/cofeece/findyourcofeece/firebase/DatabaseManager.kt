@@ -2,17 +2,13 @@ package com.cofeece.findyourcofeece.firebase
 
 import android.util.Log
 
-import com.cofeece.findyourcofeece.user.User
-import com.cofeece.findyourcofeece.client.Client
-import com.cofeece.findyourcofeece.owner.Owner
-import com.cofeece.findyourcofeece.owner.OwnerChildren
+import com.cofeece.findyourcofeece.model.user.User
+import com.cofeece.findyourcofeece.model.client.Client
+import com.cofeece.findyourcofeece.model.owner.Owner
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlin.concurrent.thread
 
 
 private const val TAG = "DatabaseManager"

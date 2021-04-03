@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     style="@style/AppTheme"
-    tools:context=".OwnerHomeActivity">
+    tools:context=".view.OwnerHomeActivity">
 
     <TextView
         android:id="@+id/welcomeOwnerMsg"
