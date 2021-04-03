@@ -45,6 +45,7 @@ class RegisterBankDetails : AppCompatActivity() {
         val restaurant: Restaurant? =
             intent.getParcelableExtra(RestaurantDetails.RESTAURANT.toString())
         if (restaurant != null) {
+            Log.d(TAG, "onCreate: owner's restaurant is ${restaurant}")
             owner.setRestaurant(restaurant)
         }
 
@@ -74,7 +75,7 @@ class RegisterBankDetails : AppCompatActivity() {
     }
 
     /** Class Methods: */
-    fun insertOwnerToDatabase(owner: Owner) {
+    private fun insertOwnerToDatabase(owner: Owner) {
         database.writeToDatabase(user = owner, type = OWNERS)
     }
 

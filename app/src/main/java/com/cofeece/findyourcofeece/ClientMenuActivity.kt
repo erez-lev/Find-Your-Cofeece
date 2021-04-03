@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_client_menu.*
 import kotlinx.android.synthetic.main.fragment_timer.*
@@ -75,7 +76,6 @@ class ClientMenuActivity :
             iOldFragment?.view?.visibility = View.GONE
             iOldFragment?.view?.isVisible = false
             timerButton.isEnabled = false
-            //iNewFragment.view?.visibility = View.VISIBLE
             switchFragment(iNewFragment)
             Log.d(TAG, "loadNewFragment: is fragment visible? ${iNewFragment.isVisible}")
         } else {
@@ -93,11 +93,15 @@ class ClientMenuActivity :
         val fragmentManager = supportFragmentManager
 
         if (iNextFragment != null) {
-            fragmentManager.
-            beginTransaction().
-            replace(R.id.mainFragment, iNextFragment).
-            addToBackStack(null).
-            commit()
+            fragmentManager.commit {
+                setReorderingAllowed(true)
+                replace(R.id.mainFragment, iNextFragment)
+            }
+//            fragmentManager.
+//            beginTransaction().
+//            replace(R.id.mainFragment, iNextFragment).
+//            addToBackStack(null).
+//            commit()
 
             iNextFragment.view?.visibility = View.VISIBLE
             iNextFragment.view?.isVisible = true

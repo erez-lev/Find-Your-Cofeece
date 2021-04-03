@@ -8,18 +8,26 @@
     android:background="@color/colorPrimary"
     tools:context=".TimerFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/timerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|top"
-        android:layout_marginTop="150dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="100dp"
         android:clickable="true"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:src="@drawable/ic_baseline_timer_24"
-        app:fabCustomSize="120dp"
-        app:maxImageSize="48dp" />
+        android:focusable="true"
+        android:fontFamily="@font/hind_bold"
+        android:longClickable="true"
+        android:text="@string/start_timer"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:backgroundTint="@color/colorSecondary"
+        app:cornerRadius="200dp" />
 
     <EditText
         android:id="@+id/timeShowETV"
@@ -27,8 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="200dp"
+        android:autofillHints=""
         android:ems="10"
-        android:inputType="time"
+        android:hint="@string/start_time_timer"
+        android:inputType="none|time"
+        android:singleLine="false"
         android:text="@string/start_time_timer"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -45,4 +56,5 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="24sp" />
+
 </FrameLayout>

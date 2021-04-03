@@ -6,12 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MapFragment">
 
-    <fragment
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progressbar"/>
+
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapActivity" />
+        tools:context=".ClientMenuActivity" />
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -19,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="24px"
+        android:layout_marginBottom="24dp"
         android:enabled="false"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"

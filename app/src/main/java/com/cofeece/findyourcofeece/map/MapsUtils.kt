@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Address
 import android.location.Geocoder
+import android.os.Looper
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.cofeece.findyourcofeece.R
@@ -15,6 +16,7 @@ import java.io.IOException
 
 const val TAG = "MapsUtils"
 
+
 class MapsUtils {
     fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
         Log.d(TAG, "getLocationFromAddress: called")
@@ -23,7 +25,7 @@ class MapsUtils {
         var p1: LatLng? = null
         try {
             // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5)
+            address = coder.getFromLocationName(strAddress, 2)
             if (address == null) {
                 return null
             }

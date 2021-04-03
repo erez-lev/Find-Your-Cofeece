@@ -45,15 +45,28 @@ class TimerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG, "onViewCreated called")
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startClock()
+        stopClock()
+    }
+
+    private fun startClock() {
         timerButton.setOnLongClickListener {
             Log.d(TAG, "onViewCreated: timerButton clicked long.")
             isFirstClick = true
             start(timeShowETV)
+            timerButton.text = "Stop"
+            timerButton.setTextColor(Color.RED)
             pressButtonHintTV.text = "Started!"
             pressButtonHintTV.setTextColor(Color.YELLOW)
             true
         }
+    }
 
+    private fun stopClock() {
         timerButton.setOnClickListener {
             if (!isFirstClick) {
                 Log.d(TAG, "onViewCreated: timerButton clicked.")
@@ -62,6 +75,8 @@ class TimerFragment : Fragment() {
             } else {
                 Log.d(TAG, "onViewCreated: timerButton clicked after long clicked.")
                 stop(timeShowETV)
+                timerButton.setText(R.string.start_timer)
+                timerButton.setTextColor(Color.BLACK)
                 pressButtonHintTV.text = "Your time was ${timeShowETV.text}"
                 pressButtonHintTV.setTextColor(Color.WHITE)
                 timeShowETV.setText(R.string.start_time_timer)
@@ -70,19 +85,19 @@ class TimerFragment : Fragment() {
         }
     }
 
-    fun getDateFromMillis(d: Long): String? {
+    private fun getDateFromMillis(d: Long): String? {
         val df = SimpleDateFormat("HH:mm:ss")
         df.setTimeZone(TimeZone.getTimeZone("GMT"))
         return df.format(d)
     }
 
-    fun start(v: View?) {
+    private fun start(v: View?) {
         Log.d(TAG, "start: called.")
         startTime = SystemClock.uptimeMillis()
         customHandler.postDelayed(updateTimerThread, 0)
     }
 
-    fun stop(v: View?) {
+    private fun stop(v: View?) {
         Log.d(TAG, "stop: called.")
         customHandler.removeCallbacks(updateTimerThread)
     }

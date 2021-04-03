@@ -14,7 +14,7 @@
         android:visibility="gone"
         layout="@layout/progressbar"/>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainFragment"
         android:name="com.cofeece.findyourcofeece.TimerFragment"
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import androidx.fragment.app.activityViewModels
 
 import com.cofeece.findyourcofeece.map.DirectionsJSONParser
 import com.cofeece.findyourcofeece.map.MapsUtils
+import com.cofeece.findyourcofeece.owner.Owner
 
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -56,7 +58,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
-
+import kotlin.concurrent.thread
 
 private const val TAG = "MapFragment"
 
@@ -73,15 +75,11 @@ private const val ARG_LOCATION = "Location"
  * create an instance of this fragment.
  */
 
-private interface OnMapFinished {
-    fun onMapFinished()
-}
-
 class MapFragment(private val listener: OnMapFragmentViewCreated) :
     Fragment(),
     OnMapReadyCallback,
     PermissionListener,
-    OnMapFinished {
+    OnDataReady {
 
     /** Properties: */
     private lateinit var mMap: GoogleMap
@@ -89,11 +87,11 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
     private val mViewModel: MapsViewModel by activityViewModels()
     private var mContext: Context? = null
     private var mActivity: FragmentActivity? = null
-    private lateinit var mMarker: BitmapDescriptor
     private lateinit var mCurrentLatLng: LatLng
     private lateinit var mDestinationLatLng: LatLng
     private lateinit var mPolyline: Polyline
-    private val mMapUtils = MapsUtils()
+    private val mMapUtils by lazy {  MapsUtils()  }
+    private val mUiHandler = android.os.Handler(Looper.getMainLooper())
 
     /** Activity Methods: */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,7 +107,12 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
             e.printStackTrace()
         }
 
-        mViewModel.loadOwnersTest()
+//        mViewModel.loadOwnersTest()
+        // That's a test below!
+        if (mViewModel.mapFragmentListener != null) {
+            setRestaurantsOnMapVM()
+        }
+        mViewModel.mapFragmentListener = this   // Register listener of view model
     }
 
     override fun onCreateView(
@@ -126,15 +129,12 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
         Log.d(TAG, "onViewCreated: called")
         super.onViewCreated(view, savedInstanceState)
 
-        try {
-            val mapFragment =
-                childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-            mapFragment.getMapAsync(this)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
+    /** Implementations */
     override fun onMapReady(googleMap: GoogleMap?) {
         Log.d(TAG, "onMapReady: called")
         mMap = googleMap ?: return
@@ -151,15 +151,19 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
             givePermission()
         }
 
-        this.onMapFinished()
+        onMapFinished()
         // TODO: Need to add custom map.
     }
 
-    override fun onMapFinished() {
-        var requestDrections = false
+    private fun onMapFinished() {
         Log.d(TAG, "onMapFinished: called")
-//        setRestaurantsOnMap()
-        setRestaurantsOnMapVM()
+        this.listener.onMapFragmentViewCreated()
+        listenToMarkerOrMapClicked()
+    }
+
+    private fun listenToMarkerOrMapClicked() {
+        var requestDrections = false
+
         mMap.setOnMarkerClickListener {
             mDestinationLatLng = it.position
             reserveButton.visibility = View.VISIBLE
@@ -186,53 +190,59 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
         }
     }
 
-    private fun getDirectionsByPolyline() {
-            Log.d(TAG, "getDirectionsByPolyline: called")
-            // Checks, whether start and end locations are captured
-            // Getting URL to the Google Directions API
-            // Checks, whether start and end locations are captured
-            // Getting URL to the Google Directions API
-            val url = getDirectionsUrl(mCurrentLatLng, mDestinationLatLng)
-            Log.d("url", url + "")
-            val downloadTask = DownloadTask()
-            // Start downloading json data from Google Directions API
-            // Start downloading json data from Google Directions API
-            downloadTask.execute(url)
-    }
-
-    override fun onStop() {
-        Log.d(TAG, "onStop: called")
-        super.onStop()
-        mViewModel.clearOwnerList()
+    override fun onDataReady() {
+        Log.d(TAG, "onDataReady: called")
+        setRestaurantsOnMapVM()
     }
 
     /** Class Methods: */
     private fun setRestaurantsOnMapVM() {
         Log.d(TAG, "setRestaurantsOnMapVM: called")
-        mMarker = mMapUtils.createCustomMarker(mContext)
         mViewModel.ownersData.observe(this, { owners ->
             Log.d(TAG, "setRestaurantsOnMapVM: in mViewModel.loadOwners owners are $owners")
-            owners.forEach { owner ->
-                val ownerFullAddress = owner.getRestaurant().getAddress().toString()
-                val latLng: LatLng? = mMapUtils.getLocationFromAddress(mContext, ownerFullAddress)
-
-                if (latLng != null) {
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .title(owner.getRestaurant().getName())
-                            .snippet(owner.getRestaurant().getAddress().toString())
-                            .icon(mMarker)
-                    )
-                } else {
-                    Log.d(TAG, "setRestaurantsOnMapVM: Error! latlng of the current address is wrong")
-                }
-            }
-
-            this.listener.onMapFragmentViewCreated()
+            owners.forEach { owner -> setMarkerOnMap(owner) }
         })
-
         Log.d(TAG, "setRestaurantsOnMapVM: ends")
+    }
+
+    private fun setMarkerOnMap(owner: Owner) {
+        val marker = mMapUtils.createCustomMarker(mContext)
+        Thread {
+            val ownerFullAddress = owner.getRestaurant().getAddress().toString()
+            val latLng: LatLng? = mMapUtils.getLocationFromAddress(mContext, ownerFullAddress)
+
+            postMarkersToUI(owner.getRestaurant().getName(), ownerFullAddress, latLng, marker)
+        }.start()
+    }
+
+    private fun postMarkersToUI(restaurantName: String, ownerFullAddress: String, position: LatLng?, customMarker: BitmapDescriptor) {
+        mUiHandler.post {
+            if (position != null) {
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(position)
+                        .title(restaurantName)
+                        .snippet(ownerFullAddress)
+                        .icon(customMarker)
+                )
+            } else {
+                Log.d(TAG, "setRestaurantsOnMapVM: Error! latlng of the current address is wrong")
+            }
+        }
+    }
+
+    private fun getDirectionsByPolyline() {
+        Log.d(TAG, "getDirectionsByPolyline: called")
+        // Checks, whether start and end locations are captured
+        // Getting URL to the Google Directions API
+        // Checks, whether start and end locations are captured
+        // Getting URL to the Google Directions API
+        val url = getDirectionsUrl(mCurrentLatLng, mDestinationLatLng)
+        Log.d("url", url + "")
+        val downloadTask = DownloadTask()
+        // Start downloading json data from Google Directions API
+        // Start downloading json data from Google Directions API
+        downloadTask.execute(url)
     }
 
 //    private fun setRestaurantsOnMap() {
@@ -386,22 +396,13 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
 
                         mCurrentLatLng = LatLng(mLastLocation!!.latitude, mLastLocation!!.longitude)
 
-//                        mMap.addMarker(
-//                            MarkerOptions()
-//                                .position(LatLng(mLastLocation!!.latitude, mLastLocation.longitude))
-//                                .title("Current Location")
-//                                .snippet(address)
-//                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-//                        )
-
                         val cameraPosition = CameraPosition.Builder()
                             .target(LatLng(mLastLocation.latitude, mLastLocation.longitude))
                             .zoom(15f)
                             .build()
                         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
                     } else {
-                        Toast.makeText(mContext, "No current location found", Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(mContext, "No current location found", Toast.LENGTH_LONG).show()
                     }
                 }
         }
@@ -506,7 +507,7 @@ class MapFragment(private val listener: OnMapFragmentViewCreated) :
         // Sensor enabled
         val sensor = "sensor=false"
         val mode = "mode=driving"
-        val apiKey = "key=MY_API_KEY" // Need to replace "MY_API_KEY" with my real api key from google, for this to work.
+        val apiKey = "key=AIzaSyAlHbqBbk--UDj6pig_nDyL6Z_238WoOLI" // Need to replace "MY_API_KEY" with my real api key from google, for this to work.
         // Building the parameters to the web service
         val parameters = "$strOrigin&$strDest&$sensor&$mode&$apiKey"
 

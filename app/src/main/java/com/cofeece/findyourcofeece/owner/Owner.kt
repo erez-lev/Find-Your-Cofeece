@@ -44,6 +44,10 @@ class Owner(
 
     fun setRestaurant(restaurant: Restaurant) {
         this.restaurant = restaurant
+//        this.restaurant.setName(restaurant.getName())
+//        this.restaurant.setAddress(restaurant.getAddress())
+//        this.restaurant.setLatLng(restaurant.getLatLng())
+//        this.restaurant.setAddress(restaurant.getAddress())
     }
 
     fun setBank(bank: Bank) {
